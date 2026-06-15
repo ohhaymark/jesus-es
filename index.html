@@ -1,681 +1,893 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memoriza Versículo</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
-<meta name="theme-color" content="#0a0a16">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Memoriza">
+<title>Encontrando a Jesús en el Antiguo Testamento</title>
 <style>
-:root {
-  --bg: #0a0a16;
-  --surface: #121220;
-  --surface2: #1a1a2e;
-  --border: rgba(180,160,100,0.15);
-  --border2: rgba(180,160,100,0.3);
-  --gold: #c9a84c;
-  --gold2: #e8c96a;
-  --gold3: #f5e4a8;
-  --text: #ede8d8;
-  --muted: #7a7565;
-  --muted2: #a09880;
-  --green: #4caf82;
-  --red: #d95555;
-  --yellow: #c4943c;
-  --r: 14px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&family=Lato:wght@300;400&display=swap');
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;min-height:100vh;padding-bottom:90px}
 
-/* HEADER */
-.hdr{text-align:center;padding:36px 20px 20px;position:relative}
-.hdr-ornament{color:var(--gold);font-size:0.7rem;letter-spacing:6px;opacity:0.6;margin-bottom:8px}
-.hdr h1{font-size:1.7rem;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--gold3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hdr p{color:var(--muted2);font-size:0.78rem;margin-top:6px;letter-spacing:1px}
-.hdr-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px auto 0}
-
-/* NAV */
-nav{display:flex;justify-content:center;gap:4px;padding:0 12px 16px;flex-wrap:wrap}
-nav button{background:transparent;border:1px solid var(--border);color:var(--muted2);padding:8px 16px;border-radius:99px;cursor:pointer;font-size:0.75rem;transition:all 0.25s;font-family:inherit;letter-spacing:0.5px;display:flex;align-items:center;gap:6px}
-nav button svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-nav button.active,nav button:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08)}
-
-/* SCREENS */
-.screen{display:none;padding:16px 16px 0;max-width:580px;margin:0 auto}
-.screen.active{display:block}
-.sec-title{font-size:0.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* CARDS */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px}
-.card+.card{margin-top:10px}
-
-/* STUDY MODE BAR */
-.mode-bar{display:flex;gap:6px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
-.mode-bar button{background:var(--surface);border:1px solid var(--border);color:var(--muted2);padding:6px 16px;border-radius:99px;cursor:pointer;font-size:0.74rem;transition:all 0.2s;font-family:inherit;letter-spacing:0.5px}
-.mode-bar button.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.1)}
-
-/* FLASHCARD */
-.card-area{perspective:1000px;margin:0 auto 14px;max-width:500px}
-.card-inner{position:relative;width:100%;min-height:230px;transform-style:preserve-3d;transition:transform 0.5s;cursor:pointer}
-.card-inner.flipped{transform:rotateY(180deg)}
-.card-front,.card-back{position:absolute;width:100%;min-height:230px;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);padding:30px 24px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
-.card-back{transform:rotateY(180deg)}
-.card-chip{font-size:0.62rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;background:rgba(201,168,76,0.08);padding:4px 14px;border-radius:99px;border:1px solid var(--border)}
-.card-text{font-size:1rem;line-height:1.8;color:var(--text)}
-.card-ref{font-size:1rem;color:var(--gold2);font-style:italic;margin-top:14px}
-.card-ref-big{font-size:1.5rem;color:var(--gold2);font-style:italic}
-.card-hint{font-size:0.72rem;color:var(--muted);margin-top:16px}
-.card-counter{text-align:center;color:var(--muted);font-size:0.75rem;margin-bottom:10px;letter-spacing:1px}
-.btn-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
-.btn-row button{padding:9px 22px;border-radius:99px;border:none;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:opacity 0.2s;letter-spacing:0.5px}
-.btn-f{background:var(--red);color:#fff}.btn-a{background:var(--yellow);color:#fff}.btn-k{background:var(--green);color:#fff}
-.btn-row button:hover{opacity:0.82}
-
-/* GAPS */
-.gap-text{font-size:0.97rem;line-height:2;color:var(--text);text-align:center}
-.gap{display:inline-block;background:rgba(201,168,76,0.1);border:1px solid var(--border);border-radius:6px;min-width:65px;height:1.15em;vertical-align:middle;cursor:pointer;color:transparent;transition:all 0.3s}
-.gap.revealed{background:rgba(201,168,76,0.12);border-color:var(--gold);color:var(--gold2)}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;text-align:center}
-.stat-num{font-size:2rem;margin-bottom:4px}
-.stat-lbl{font-size:0.7rem;color:var(--muted2);letter-spacing:1px;text-transform:uppercase}
-.prog-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:8px}
-.pi-ref{color:var(--gold);font-size:0.83rem;display:flex;align-items:center;justify-content:space-between}
-.pi-text{color:var(--muted2);font-size:0.77rem;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pi-bar{margin-top:10px;height:3px;background:var(--border);border-radius:99px;overflow:hidden}
-.pi-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold3));transition:width 0.4s}
-.badge{font-size:0.65rem;padding:3px 10px;border-radius:99px;letter-spacing:0.5px}
-.b-new{background:rgba(120,115,100,0.2);color:var(--muted2)}
-.b-learn{background:rgba(196,148,60,0.15);color:var(--yellow)}
-.b-done{background:rgba(76,175,130,0.15);color:var(--green)}
-
-/* FORM */
-.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.form-group label{font-size:0.68rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
-.form-group input,.form-group textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:11px 14px;font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s;resize:vertical}
-.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
-.form-group textarea{min-height:88px}
-.ai-row{display:flex;gap:8px}
-.ai-row input{flex:1}
-.status-msg{font-size:0.75rem;min-height:16px;margin-top:-8px}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a0a16;border:none;border-radius:99px;padding:11px 28px;font-size:0.88rem;font-family:inherit;cursor:pointer;font-weight:bold;transition:opacity 0.2s;letter-spacing:0.5px}
-.btn-gold:hover{opacity:0.86}.btn-gold:disabled{opacity:0.45;cursor:not-allowed}
-.verse-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
-.vi-ref{color:var(--gold);font-size:0.82rem}.vi-prev{color:var(--muted2);font-size:0.77rem;margin-top:3px}
-.btn-del{background:transparent;border:1px solid var(--border);color:var(--red);border-radius:8px;padding:4px 10px;cursor:pointer;font-size:0.74rem;white-space:nowrap;transition:all 0.2s}
-.btn-del:hover{background:rgba(217,85,85,0.1)}
-.empty{text-align:center;color:var(--muted);padding:40px 20px;font-size:0.85rem;line-height:1.7}
-
-/* TÉCNICAS */
-.tec-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
-.tec-card:hover{border-color:var(--border2)}
-.tec-hdr{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;cursor:pointer;user-select:none}
-.tec-left{display:flex;align-items:center;gap:12px}
-.tec-ico{width:36px;height:36px;border-radius:10px;background:rgba(201,168,76,0.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.tec-ttl{color:var(--gold2);font-size:0.92rem}.tec-sub{color:var(--muted2);font-size:0.7rem;margin-top:2px;letter-spacing:0.5px}
-.tec-arr{color:var(--muted);transition:transform 0.3s;font-size:0.8rem}
-.tec-card.open .tec-arr{transform:rotate(180deg)}
-.tec-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border)}
-.tec-card.open .tec-body{display:block}
-.tec-body p{color:var(--text);font-size:0.85rem;line-height:1.75;margin-top:14px}
-.tec-body ul{padding-left:18px;margin-top:8px}
-.tec-body li{color:var(--muted2);font-size:0.82rem;line-height:1.75;margin-bottom:3px}
-.tec-body strong{color:var(--gold)}
-.tec-ex{background:rgba(201,168,76,0.06);border-left:2px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:12px;font-size:0.82rem;color:var(--muted2);line-height:1.65;font-style:italic}
-
-/* AI CHAT */
-.ai-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-top:14px}
-.ai-box-title{font-size:0.68rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-.chat-row{display:flex;gap:8px}
-.chat-row input{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:inherit;outline:none;transition:border-color 0.2s}
-.chat-row input:focus{border-color:var(--gold)}
-.chat-row button{background:rgba(201,168,76,0.15);border:1px solid var(--border2);color:var(--gold);border-radius:10px;padding:10px 15px;cursor:pointer;font-size:0.85rem;font-family:inherit;transition:all 0.2s;white-space:nowrap}
-.chat-row button:hover{background:rgba(201,168,76,0.22)}.chat-row button:disabled{opacity:0.45;cursor:not-allowed}
-#chat-resp{margin-top:14px;font-size:0.84rem;line-height:1.8;color:var(--text);white-space:pre-wrap}
-#chat-resp.loading{color:var(--muted2);font-style:italic}
-
-/* GUIDE */
-.guide-hero{text-align:center;padding:22px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:16px}
-.guide-hero p{color:var(--muted2);font-size:0.84rem;line-height:1.7;margin-top:8px}
-.guide-tab{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
-.guide-tab-hdr{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}
-.guide-tab-hdr:hover .guide-tab-title{color:var(--gold2)}
-.guide-tab-num{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--gold);flex-shrink:0;font-style:normal}
-.guide-tab-title{color:var(--text);font-size:0.9rem;flex:1;transition:color 0.2s}
-.guide-tab-arr{color:var(--muted);font-size:0.78rem;transition:transform 0.3s}
-.guide-tab.open .guide-tab-arr{transform:rotate(180deg)}
-.guide-tab-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border)}
-.guide-tab.open .guide-tab-body{display:block}
-.guide-step{display:flex;gap:10px;margin-top:14px;align-items:flex-start}
-.guide-step-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:7px;flex-shrink:0}
-.guide-step p{color:var(--muted2);font-size:0.83rem;line-height:1.7}
-.guide-step p strong{color:var(--text)}
-.guide-tip{background:rgba(201,168,76,0.06);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:14px;font-size:0.8rem;color:var(--gold2);line-height:1.65}
-
-/* TOAST */
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--gold);color:var(--gold2);padding:9px 22px;border-radius:99px;font-size:0.8rem;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:99;letter-spacing:0.5px}
-.toast.show{opacity:1}
-
-/* TABLET */
-@media(min-width:600px){
-  .screen{padding:20px 24px 0}
-  .card-area{max-width:520px}
-  .stats-grid{gap:14px}
-  .stat-num{font-size:2.4rem}
-  nav{gap:6px;padding:0 16px 18px}
-  nav button{padding:9px 18px;font-size:0.8rem}
+body {
+  min-height:100vh;
+  background: #1a1208;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, #3a2a0a 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  font-family: 'Lato', sans-serif;
+  color: #f0e0c0;
+  overflow-x: hidden;
 }
-/* MOBILE GRANDE (≤480px) */
-@media(max-width:480px){
-  nav{gap:4px;padding:0 8px 12px}
-  nav button{padding:7px 10px;font-size:0.68rem;gap:4px}
-  nav button svg{width:13px;height:13px}
-  .hdr h1{font-size:1.25rem;letter-spacing:2px}
-  .hdr{padding:24px 16px 14px}
-  .screen{padding:12px 12px 0}
-  .card-front,.card-back{padding:22px 16px}
-  .card-text{font-size:0.93rem}
-  .card-ref-big{font-size:1.2rem}
-  .btn-row button{padding:8px 16px;font-size:0.76rem}
-  .stats-grid{gap:8px}
-  .stat-num{font-size:1.6rem}
-  .stat-lbl{font-size:0.65rem}
-  .tec-hdr{padding:13px 14px}
-  .tec-ico{width:32px;height:32px;font-size:0.9rem}
-  .tec-ttl{font-size:0.86rem}
-  .guide-tab-hdr{padding:12px 14px}
-  .guide-tab-title{font-size:0.83rem}
-  .ai-box{padding:14px}
-  .card{padding:16px}
+
+/* ── HEADER ── */
+header {
+  text-align:center;
+  padding: 52px 24px 36px;
+  position: relative;
 }
-/* MOBILE PEQUENO (≤360px) */
-@media(max-width:360px){
-  nav button span{display:none}
-  nav button{padding:8px 10px}
-  .hdr h1{font-size:1.1rem}
+.header-ornament {
+  font-size:28px;
+  letter-spacing:12px;
+  color:#c9a84c;
+  opacity:.5;
+  display:block;
+  margin-bottom:16px;
 }
+header h1 {
+  font-family:'Cinzel',serif;
+  font-size:clamp(22px,4.5vw,38px);
+  font-weight:700;
+  color:#e8c97a;
+  letter-spacing:1px;
+  line-height:1.3;
+  text-shadow: 0 0 40px rgba(201,168,76,.3);
+}
+header h1 span { display:block; font-size:.6em; font-weight:400; letter-spacing:3px; color:#a08840; margin-bottom:6px; }
+header p {
+  margin-top:14px;
+  font-family:'IM Fell English',serif;
+  font-style:italic;
+  font-size:15px;
+  color:#9e8860;
+  max-width:520px;
+  margin-left:auto; margin-right:auto;
+  line-height:1.7;
+}
+.divider {
+  width:220px; height:1px;
+  background:linear-gradient(90deg,transparent,#c9a84c,transparent);
+  margin:20px auto 0;
+}
+
+/* ── PROGRESS ── */
+.prog-wrap {
+  max-width:600px; margin:28px auto 0; padding:0 24px;
+}
+.prog-top {
+  display:flex; justify-content:space-between;
+  font-size:11px; letter-spacing:2px; text-transform:uppercase;
+  color:#7a6840; margin-bottom:8px;
+}
+.prog-top b { color:#c9a84c; font-weight:600; }
+.prog-track {
+  height:3px; background:#2e2410; border-radius:99px; overflow:hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
+}
+.prog-fill {
+  height:100%; border-radius:99px;
+  background:linear-gradient(90deg,#7a5a20,#e8c97a,#c9a84c);
+  transition:width .7s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 8px rgba(201,168,76,.4);
+}
+
+/* ── SECTION LABELS ── */
+.section-label {
+  text-align:center;
+  font-family:'Cinzel',serif;
+  font-size:11px; letter-spacing:4px; text-transform:uppercase;
+  color:#6a5830;
+  margin:40px 0 20px;
+  display:flex; align-items:center; gap:12px;
+  max-width:680px; margin-left:auto; margin-right:auto;
+  padding:0 20px;
+}
+.section-label::before,.section-label::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg,transparent,#3a2e18);
+}
+.section-label::after { background:linear-gradient(90deg,#3a2e18,transparent); }
+
+/* ── SCROLL CONTAINER ── */
+.scroll-container {
+  max-width:720px; margin:0 auto; padding:0 16px 60px;
+}
+
+/* ── SCROLL ITEM ── */
+.scroll-item {
+  margin-bottom:16px;
+  position:relative;
+}
+
+/* top roller */
+.scroll-roller {
+  height:18px;
+  background:linear-gradient(180deg,#8b6914 0%,#c9a84c 40%,#a07828 60%,#6b5010 100%);
+  border-radius:10px 10px 0 0;
+  box-shadow: 0 -2px 6px rgba(0,0,0,.4), inset 0 2px 3px rgba(255,255,255,.15);
+  position:relative; z-index:2;
+}
+.scroll-roller::before,.scroll-roller::after {
+  content:'';
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:22px; height:22px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#e8c060,#8b6010);
+  box-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+.scroll-roller::before { left:-6px; }
+.scroll-roller::after  { right:-6px; }
+
+/* parchment face (header, always visible) */
+.scroll-face {
+  background:
+    linear-gradient(180deg, #f5e8c8 0%, #ede0b0 30%, #e8d89e 100%);
+  border-left: 3px solid #c9a060;
+  border-right: 3px solid #c9a060;
+  padding: 16px 22px;
+  cursor:pointer;
+  display:flex; align-items:center; gap:16px;
+  position:relative; z-index:1;
+  transition: background .2s;
+  user-select:none;
+}
+.scroll-face:hover { background:linear-gradient(180deg,#fdf3d8 0%,#f0e4b8 100%); }
+.scroll-item.locked .scroll-face { cursor:not-allowed; filter:grayscale(.6) brightness(.7); }
+.scroll-item.done .scroll-face { background:linear-gradient(180deg,#f0e8d0 0%,#e5d8a8 100%); }
+
+.num-badge {
+  flex-shrink:0; width:38px; height:38px; border-radius:50%;
+  border:2px solid #c9a060;
+  background:radial-gradient(circle,#f8f0d8,#e0c880);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cinzel',serif; font-size:12px; font-weight:600; color:#6a4a10;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.scroll-item.done .num-badge {
+  background:radial-gradient(circle,#c9a84c,#8b6010);
+  color:#fff8e8;
+  border-color:#8b6010;
+}
+
+.face-text { flex:1; }
+.face-book {
+  font-family:'Cinzel',serif; font-size:16px; font-weight:600;
+  color:#3a2800; line-height:1.2;
+}
+.scroll-item.done .face-book { color:#5a3800; }
+.face-tag {
+  font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  color:#9a7840; margin-top:2px;
+}
+.face-arrow {
+  font-size:18px; color:#c9a060;
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+}
+.scroll-item.open .face-arrow { transform:rotate(180deg); }
+.lock-icon { font-size:16px; color:#7a6030; }
+
+/* ── MOBILE FONT ADJUSTMENTS ── */
+@media (max-width: 480px) {
+  header p { font-size: 16px; }
+  .face-book { font-size: 17px; }
+  .face-tag { font-size: 11px; }
+  .ctx-text { font-size: 15px; }
+  .pf-verse { font-size: 15px; }
+  .pf-ref { font-size: 12px; }
+  .pf-label { font-size: 10px; letter-spacing: 1.5px; }
+  .conn-text { font-size: 15px; }
+  .conn-label { font-size: 10px; }
+  .ctx-label { font-size: 10px; }
+  .btn-done { font-size: 13px; padding: 14px; }
+  .quiz-q { font-size: 19px; }
+  .quiz-opt { font-size: 16px; padding: 14px 16px; }
+  .quiz-fb { font-size: 15px; }
+  .result-msg { font-size: 19px; }
+  .prog-top { font-size: 12px; }
+  .section-label { font-size: 12px; letter-spacing: 3px; }
+}
+
+/* ── UNROLLING BODY ── */
+.scroll-body {
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .7s cubic-bezier(.4,0,.2,1);
+  background:
+    linear-gradient(180deg,#ede0b0 0%,#e8d898 40%,#ead8a0 100%);
+  border-left:3px solid #c9a060;
+  border-right:3px solid #c9a060;
+  position:relative;
+}
+.scroll-body::before {
+  content:'';
+  position:absolute; inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0;
+}
+.scroll-item.open .scroll-body { max-height:900px; }
+
+.scroll-inner { padding:20px 24px 24px; position:relative; z-index:1; }
+
+/* aged lines */
+.aged-lines {
+  position:absolute; inset:0; pointer-events:none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0px, transparent 27px,
+    rgba(160,120,40,.08) 27px, rgba(160,120,40,.08) 28px
+  );
+}
+
+/* context block */
+.context-block {
+  background:rgba(160,120,30,.1);
+  border-left:3px solid #c9a060;
+  border-radius:0 6px 6px 0;
+  padding:12px 16px;
+  margin-bottom:16px;
+}
+.ctx-label {
+  font-family:'Cinzel',serif;
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  color:#8a6830; margin-bottom:6px;
+}
+.ctx-text {
+  font-family:'IM Fell English',serif;
+  font-size:14px; color:#3a2800; line-height:1.7;
+}
+
+/* prophecy / fulfillment */
+.pf-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:14px;
+  margin-bottom:16px;
+}
+@media(max-width:480px){ .pf-grid { grid-template-columns:1fr; } }
+
+.pf-card {
+  border-radius:6px; padding:14px;
+  position:relative; overflow:hidden;
+}
+.pf-prophecy {
+  background:rgba(100,70,20,.12);
+  border:1px solid rgba(160,120,40,.35);
+}
+.pf-fulfillment {
+  background:rgba(40,90,50,.1);
+  border:1px solid rgba(80,140,80,.3);
+}
+.pf-label {
+  font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+  font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:5px;
+}
+.pf-prophecy .pf-label  { color:#8a6020; }
+.pf-fulfillment .pf-label { color:#3a7a4a; }
+.pf-verse {
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:13.5px; color:#2e1e00; line-height:1.65; margin-bottom:6px;
+}
+.pf-ref {
+  font-size:11px; color:#7a5a30; font-weight:400;
+}
+
+/* connection */
+.connection-block {
+  background:rgba(100,70,10,.08);
+  border:1px solid rgba(180,140,60,.2);
+  border-radius:6px; padding:14px;
+  margin-bottom:16px;
+}
+.conn-label {
+  font-family:'Cinzel',serif;
+  font-size:9px; letter-spacing:3px; text-transform:uppercase;
+  color:#8a6020; margin-bottom:8px;
+}
+.conn-text {
+  font-size:13.5px; color:#2e2000; line-height:1.7;
+}
+
+/* done btn */
+.btn-done {
+  width:100%; padding:12px;
+  background:linear-gradient(135deg,#8b6010,#c9a84c,#a07828);
+  border:none; border-radius:6px;
+  font-family:'Cinzel',serif; font-size:12px; letter-spacing:1.5px;
+  color:#fff8e8; cursor:pointer;
+  box-shadow:0 3px 12px rgba(0,0,0,.3);
+  transition:opacity .2s, transform .1s;
+}
+.btn-done:hover { opacity:.9; transform:translateY(-1px); }
+.done-stamp {
+  text-align:center; font-family:'Cinzel',serif;
+  font-size:11px; letter-spacing:2px; color:#8a6020;
+  padding:4px 0;
+}
+
+/* bottom roller */
+.scroll-roller-bottom {
+  height:18px;
+  background:linear-gradient(180deg,#6b5010 0%,#a07828 40%,#c9a84c 60%,#8b6914 100%);
+  border-radius:0 0 10px 10px;
+  box-shadow:0 3px 8px rgba(0,0,0,.5), inset 0 -2px 3px rgba(255,255,255,.1);
+  position:relative; z-index:2;
+}
+.scroll-roller-bottom::before,.scroll-roller-bottom::after {
+  content:'';
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:22px; height:22px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#e8c060,#8b6010);
+  box-shadow:0 2px 6px rgba(0,0,0,.5);
+}
+.scroll-roller-bottom::before { left:-6px; }
+.scroll-roller-bottom::after  { right:-6px; }
+
+/* ── QUIZ ── */
+#quiz-section {
+  max-width:720px; margin:0 auto 60px; padding:0 16px;
+}
+.quiz-scroll {
+  background:linear-gradient(180deg,#f0e4b8,#e8d898);
+  border:3px solid #c9a060;
+  border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.2);
+  overflow:hidden;
+}
+.quiz-header {
+  background:linear-gradient(180deg,#8b6010,#c9a84c);
+  padding:16px 24px;
+  text-align:center;
+}
+.quiz-header h2 {
+  font-family:'Cinzel',serif; font-size:16px; letter-spacing:2px;
+  color:#fff8e0; text-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+.quiz-body { padding:24px; }
+.quiz-prog-bar {
+  height:3px; background:rgba(160,120,40,.2); border-radius:99px;
+  overflow:hidden; margin-bottom:20px;
+}
+.quiz-prog-fill {
+  height:100%; border-radius:99px;
+  background:linear-gradient(90deg,#8b6010,#c9a84c);
+  transition:width .5s ease;
+}
+.quiz-q {
+  font-family:'IM Fell English',serif; font-size:18px;
+  color:#2e1e00; line-height:1.5; margin-bottom:20px;
+}
+.quiz-opts { display:flex; flex-direction:column; gap:10px; }
+.quiz-opt {
+  background:rgba(160,120,40,.08);
+  border:1px solid rgba(160,120,40,.3);
+  border-radius:6px; padding:12px 16px;
+  font-family:'IM Fell English',serif; font-size:15px;
+  color:#3a2800; cursor:pointer; text-align:left;
+  transition:all .2s;
+}
+.quiz-opt:hover:not(:disabled) {
+  background:rgba(160,120,40,.18);
+  border-color:#c9a060; transform:translateX(3px);
+}
+.quiz-opt.correct { background:rgba(40,120,60,.15); border-color:#4a9a5a; color:#1a4a20; }
+.quiz-opt.wrong   { background:rgba(160,40,40,.12);  border-color:#c05050; color:#5a1a1a; }
+.quiz-opt:disabled { cursor:default; transform:none; }
+.quiz-fb {
+  margin-top:14px; font-family:'IM Fell English',serif;
+  font-size:14px; line-height:1.6; color:#3a2800; min-height:20px;
+}
+.btn-next-q {
+  margin-top:16px; padding:11px 28px;
+  background:linear-gradient(135deg,#8b6010,#c9a84c);
+  border:none; border-radius:6px;
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:2px;
+  color:#fff8e0; cursor:pointer; display:none;
+  box-shadow:0 3px 10px rgba(0,0,0,.3);
+  transition:opacity .2s;
+}
+.btn-next-q.show { display:inline-block; }
+.btn-next-q:hover { opacity:.85; }
+
+/* result */
+.quiz-result { text-align:center; padding:8px 0 16px; }
+.result-num {
+  font-family:'Cinzel',serif; font-size:64px; font-weight:700;
+  color:#8b6010; line-height:1;
+  text-shadow:0 2px 8px rgba(139,96,16,.3);
+}
+.result-sub { font-size:13px; color:#7a6030; letter-spacing:2px; margin:4px 0 20px; text-transform:uppercase; }
+.result-msg {
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:18px; color:#2e1e00; line-height:1.6; margin-bottom:20px;
+  max-width:420px; margin-left:auto; margin-right:auto;
+}
+.btn-restart {
+  background:transparent; border:1px solid #c9a060;
+  border-radius:6px; padding:10px 24px;
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:2px;
+  color:#8b6010; cursor:pointer; transition:all .2s;
+}
+.btn-restart:hover { background:#c9a84c; color:#1a1208; }
+
+.quiz-locked {
+  text-align:center; padding:32px 20px;
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:16px; color:#7a6030; line-height:1.7;
+}
+.quiz-locked .lock { font-size:32px; display:block; margin-bottom:12px; }
 </style>
 </head>
 <body>
 
-<div class="hdr">
-  <div class="hdr-ornament">✦ ✦ ✦</div>
-  <h1>MEMORIZA VERSÍCULO</h1>
-  <p>Grave a Palavra no coração</p>
-  <div class="hdr-line"></div>
-</div>
-
-<nav>
-  <button class="active" onclick="show('guia')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-    Como usar
-  </button>
-  <button onclick="show('study')">
-    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-    Estudar
-  </button>
-  <button onclick="show('tecnicas')">
-    <svg viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-    Técnicas
-  </button>
-  <button onclick="show('progress')">
-    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-    Progresso
-  </button>
-  <button onclick="show('add')">
-    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    Versículos
-  </button>
-</nav>
-
-<!-- ESTUDAR -->
-<div id="study" class="screen">
-  <div class="mode-bar">
-    <button class="active" onclick="setMode('flip')">Flashcard</button>
-    <button onclick="setMode('gaps')">Lacunas</button>
-    <button onclick="setMode('ref')">Só referência</button>
+<header>
+  <span class="header-ornament">— ✦ —</span>
+  <h1>
+    <span>Un Viaje por los 39 Libros del Antiguo Testamento</span>
+    Encontrando a Jesús en el<br>Antiguo Testamento
+  </h1>
+  <p>"Escudriñad las Escrituras... y ellas son las que dan testimonio de mí." — Juan 5:39</p>
+  <div class="divider"></div>
+  <div class="prog-wrap">
+    <div class="prog-top"><span>Pergaminos abiertos</span><b id="prog-text">0 de 39</b></div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
-  <div id="study-content"></div>
-</div>
+</header>
 
-<!-- TÉCNICAS -->
-<div id="tecnicas" class="screen">
-  <div class="sec-title">Métodos de memorização</div>
+<div id="trail"></div>
 
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">🔁</div><div><div class="tec-ttl">Repetição Espaçada</div><div class="tec-sub">Ciência da memória</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>O método mais eficaz comprovado pela neurociência. Em vez de repetir várias vezes seguidas, você revisa em <strong>intervalos crescentes</strong>: hoje, amanhã, em 3 dias, em 1 semana, em 1 mês.</p>
-      <ul>
-        <li>Use os botões <strong>Lembrei / Quase / Esqueci</strong> — o app já prioriza automaticamente.</li>
-        <li>Revise pelo menos 5 minutos por dia, todos os dias.</li>
-        <li>Não pule os versículos "fáceis" — eles também precisam de revisão.</li>
-      </ul>
-      <div class="tec-ex">Dica: revise seus versículos toda manhã antes de checar o celular. 5 minutos já fazem diferença.</div>
-    </div>
-  </div>
-
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">✋</div><div><div class="tec-ttl">Ancoragem Visual (Mão)</div><div class="tec-sub">Associação corporal</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>Associe partes do versículo a cada dedo da mão. Toque cada dedo enquanto recita cada fragmento. Repita até o gesto trazer a palavra automaticamente.</p>
-      <div class="tec-ex">Filipenses 4:13 — "Tudo posso / naquele / que me / fortalece." Polegar → Indicador → Médio → Anelar.</div>
-    </div>
-  </div>
-
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">🔤</div><div><div class="tec-ttl">Acrônimos e Iniciais</div><div class="tec-sub">Codificação verbal</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>Pegue a <strong>primeira letra de cada palavra-chave</strong> e forme uma sigla ou palavra conhecida. Essa "chave" acessa o texto completo.</p>
-      <ul>
-        <li>Identifique as 3–5 palavras mais importantes.</li>
-        <li>Forme uma palavra ou sigla com as iniciais.</li>
-        <li>Associe a uma imagem visual forte.</li>
-      </ul>
-      <div class="tec-ex">Grego, Hebraico, Aramaico → G-H-A → "GHÁ" → lembra "chá" → ao tomar chá, lembra das línguas bíblicas.</div>
-    </div>
-  </div>
-
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">📝</div><div><div class="tec-ttl">Leitura Ativa (SQ3R)</div><div class="tec-sub">Compreensão profunda</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>Interaja com o texto em vez de apenas ler. O método SQ3R força o cérebro a processar profundamente.</p>
-      <ul>
-        <li><strong>Surveie:</strong> leia rapidamente uma vez.</li>
-        <li><strong>Questione:</strong> Quem? O quê? Por quê? Para quem?</li>
-        <li><strong>Leia</strong> com atenção, palavra por palavra.</li>
-        <li><strong>Recite:</strong> explique em voz alta como se ensinasse alguém.</li>
-        <li><strong>Revise:</strong> volte horas depois e teste sua memória.</li>
-      </ul>
-      <div class="tec-ex">Recitar em voz alta ativa mais regiões do cérebro do que ler em silêncio.</div>
-    </div>
-  </div>
-
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">🧩</div><div><div class="tec-ttl">Fragmentação Progressiva</div><div class="tec-sub">Memorização por partes</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>Divida o versículo em pequenos fragmentos. Memorize <strong>de trás para frente</strong>, acumulando peça por peça.</p>
-      <div class="tec-ex">João 3:16 → comece por "…vida eterna." → "…não pereça, mas tenha a vida eterna." → continue acumulando até o início.</div>
-    </div>
-  </div>
-
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">📖</div><div><div class="tec-ttl">Contexto e Narrativa</div><div class="tec-sub">Ancoragem histórica</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>Versículos sem contexto são esquecidos mais rápido. Entender quem disse, para quem e por quê dá <strong>raiz</strong> à memória.</p>
-      <ul>
-        <li>Leia o capítulo inteiro antes de focar no versículo.</li>
-        <li>Pesquise o contexto histórico e o autor.</li>
-        <li>Crie uma história mental ligando o versículo à sua vida.</li>
-      </ul>
-      <div class="tec-ex">Filipenses 4:13 foi escrito por Paulo na prisão — ele falava de contentamento, não de conquistas pessoais. Esse contexto transforma e fixa o versículo.</div>
-    </div>
-  </div>
-
-  <div class="tec-card" onclick="togTec(this)">
-    <div class="tec-hdr">
-      <div class="tec-left"><div class="tec-ico">🎵</div><div><div class="tec-ttl">Canto e Melodia</div><div class="tec-sub">Memória musical</div></div></div>
-      <span class="tec-arr">▼</span>
-    </div>
-    <div class="tec-body">
-      <p>O cérebro retém melodias com muito mais facilidade que texto. Associe o versículo a uma melodia simples — mesmo inventada.</p>
-      <ul>
-        <li>Use uma melodia conhecida e adapte o versículo a ela.</li>
-        <li>Invente um ritmo simples enquanto recita.</li>
-        <li>Repita cantando até sair automático.</li>
-      </ul>
-      <div class="tec-ex">Muitos hinos já são versículos musicados. Busque no YouTube versões cantadas do versículo que deseja memorizar.</div>
-    </div>
-  </div>
-
-  <div class="ai-box">
-    <div class="ai-box-title">✦ Pergunte à IA sobre memorização</div>
-    <div class="chat-row">
-      <input id="chat-inp" type="text" placeholder="Ex: Como memorizar um versículo longo?">
-      <button id="chat-btn" onclick="askIA()">Perguntar</button>
-    </div>
-    <div id="chat-resp"></div>
+<div id="quiz-section">
+  <div class="section-label">Quiz Final</div>
+  <div class="quiz-scroll">
+    <div class="quiz-header"><h2>⚔ La Prueba del Escriba</h2></div>
+    <div class="quiz-body" id="quiz-body"></div>
   </div>
 </div>
-
-<!-- COMO USAR -->
-<div id="guia" class="screen active">
-  <div class="guide-hero">
-    <div style="color:var(--gold);font-size:1.4rem;margin-bottom:6px">✦</div>
-    <div style="color:var(--gold2);font-size:1rem;letter-spacing:1px">Guia de uso</div>
-    <p>Toque em cada aba abaixo para aprender a usar todas as funcionalidades do app.</p>
-  </div>
-
-  <div class="guide-tab" onclick="togGuia(this)">
-    <div class="guide-tab-hdr">
-      <div class="guide-tab-num">1</div>
-      <div class="guide-tab-title">📖 Aba Estudar — pratique seus versículos</div>
-      <span class="guide-tab-arr">▼</span>
-    </div>
-    <div class="guide-tab-body">
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Esta é a aba principal. Aqui você pratica os versículos que já adicionou.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p><strong>Flashcard:</strong> veja a referência (ex: João 3:16), tente lembrar o texto, toque para revelar e avalie sua memória.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p><strong>Lacunas:</strong> o texto aparece com palavras escondidas. Toque em cada lacuna para revelar. Ótimo para testar memória parcial.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p><strong>Só referência:</strong> veja apenas a referência e recite em voz alta. Depois confira se acertou.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Após cada versículo, avalie com <strong>Lembrei</strong>, <strong>Quase</strong> ou <strong>Esqueci</strong>. O app prioriza automaticamente os que você está esquecendo.</p></div>
-      <div class="guide-tip">Dica: mude de modo conforme evolui. Comece pelo Flashcard, avance para Lacunas e depois Só referência.</div>
-    </div>
-  </div>
-
-  <div class="guide-tab" onclick="togGuia(this)">
-    <div class="guide-tab-hdr">
-      <div class="guide-tab-num">2</div>
-      <div class="guide-tab-title">🧠 Aba Técnicas — aprenda a memorizar melhor</div>
-      <span class="guide-tab-arr">▼</span>
-    </div>
-    <div class="guide-tab-body">
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Aqui você encontra <strong>7 técnicas de memorização</strong> baseadas em neurociência e métodos bíblicos tradicionais.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Toque em qualquer técnica para expandir e ler a explicação completa com exemplos práticos.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>No final da aba, há um <strong>chat com IA</strong>: digite qualquer dúvida sobre memorização e receba uma resposta personalizada.</p></div>
-      <div class="guide-tip">Sugestão: comece pela Repetição Espaçada — ela é a base de tudo neste app.</div>
-    </div>
-  </div>
-
-  <div class="guide-tab" onclick="togGuia(this)">
-    <div class="guide-tab-hdr">
-      <div class="guide-tab-num">3</div>
-      <div class="guide-tab-title">📊 Aba Progresso — acompanhe sua jornada</div>
-      <span class="guide-tab-arr">▼</span>
-    </div>
-    <div class="guide-tab-body">
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Veja no topo o total de avaliações: <strong>Lembrei</strong> (verde), <strong>Quase</strong> (amarelo) e <strong>Esqueci</strong> (vermelho).</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Abaixo, cada versículo tem uma barra de progresso e um badge de status: <strong>Novo</strong>, <strong>Aprendendo</strong> ou <strong>Memorizado</strong>.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Um versículo é considerado <strong>Memorizado</strong> quando 70% ou mais das suas avaliações foram "Lembrei".</p></div>
-      <div class="guide-tip">Volte aqui regularmente para se motivar com o avanço. A consistência é mais importante que a intensidade.</div>
-    </div>
-  </div>
-
-  <div class="guide-tab" onclick="togGuia(this)">
-    <div class="guide-tab-hdr">
-      <div class="guide-tab-num">4</div>
-      <div class="guide-tab-title">✦ Aba Versículos — adicione com IA</div>
-      <span class="guide-tab-arr">▼</span>
-    </div>
-    <div class="guide-tab-body">
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Digite qualquer referência bíblica (ex: <strong>Romanos 8:28</strong> ou <strong>Mateus 5:3-10</strong>) e clique em <strong>Buscar</strong>.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>A IA conhece a Bíblia inteira e retorna o texto automaticamente na versão <strong>NVI</strong>.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Confira o texto, edite se quiser outra versão, e clique em <strong>Adicionar à lista</strong>.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Você também pode digitar o texto manualmente caso prefira uma versão diferente (ARA, NVT, etc.).</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Para remover um versículo, clique em <strong>remover</strong> ao lado dele na lista.</p></div>
-      <div class="guide-tip">Os 5 versículos iniciais já estão incluídos para você começar a praticar agora mesmo.</div>
-    </div>
-  </div>
-
-  <div class="guide-tab" onclick="togGuia(this)">
-    <div class="guide-tab-hdr">
-      <div class="guide-tab-num">5</div>
-      <div class="guide-tab-title">💾 Sobre o salvamento de dados</div>
-      <span class="guide-tab-arr">▼</span>
-    </div>
-    <div class="guide-tab-body">
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Todos os seus versículos e progresso são salvos automaticamente no seu dispositivo (localStorage).</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Nada é enviado para nenhum servidor — seus dados são 100% locais e privados.</p></div>
-      <div class="guide-step"><div class="guide-step-dot"></div><p>Limpar o histórico do navegador pode apagar os dados. Anote os versículos importantes separadamente se necessário.</p></div>
-      <div class="guide-tip">Para usar em múltiplos dispositivos, acesse pelo mesmo navegador ou copie os versículos manualmente.</div>
-    </div>
-  </div>
-</div>
-
-<!-- PROGRESSO -->
-<div id="progress" class="screen">
-  <div class="sec-title">Sua jornada</div>
-  <div class="stats-grid" id="stats-grid"></div>
-  <div class="sec-title">Versículos</div>
-  <div id="prog-list"></div>
-</div>
-
-<!-- VERSÍCULOS -->
-<div id="add" class="screen">
-  <div class="sec-title">Buscar com IA</div>
-  <div class="card" style="margin-bottom:16px">
-    <div class="form-group">
-      <label>Referência bíblica</label>
-      <div class="ai-row">
-        <input id="inp-ref" type="text" placeholder="Ex: João 3:16 ou Salmos 91:1-4">
-        <button class="btn-gold" id="fetch-btn" onclick="fetchVerse()" style="padding:11px 16px;white-space:nowrap">✦ Buscar</button>
-      </div>
-    </div>
-    <div class="status-msg" id="ai-status"></div>
-    <div class="form-group" style="margin-top:4px">
-      <label>Texto do versículo</label>
-      <textarea id="inp-text" placeholder="Preenchido pela IA, ou escreva manualmente…"></textarea>
-    </div>
-    <button class="btn-gold" onclick="addVerse()">+ Adicionar à lista</button>
-  </div>
-
-  <div class="sec-title">Meus versículos</div>
-  <div id="verse-list"></div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-const DEF=[
-  {id:1,ref:"João 3:16",text:"Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna."},
-  {id:2,ref:"Salmos 23:1",text:"O Senhor é o meu pastor e nada me faltará."},
-  {id:3,ref:"Filipenses 4:13",text:"Tudo posso naquele que me fortalece."},
-  {id:4,ref:"Jeremias 29:11",text:"Porque eu sei os planos que tenho para vocês, diz o Senhor, planos de fazê-los prosperar e não de causar dano, planos de dar a vocês esperança e um futuro."},
-  {id:5,ref:"Provérbios 3:5-6",text:"Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento; reconheça o Senhor em todos os seus caminhos, e ele endireitará as suas veredas."},
+const BOOKS = [
+  { name:"Génesis", tag:"Pentateuco",
+    context:"Después de que la serpiente engañara a Adán y Eva, el mundo entró en ruptura con Dios. Sin embargo, incluso en ese momento sombrío, Dios no abandonó a la humanidad — hizo una promesa que lo cambiaría todo. Es el llamado Protoevangelio: la primera buena noticia.",
+    prophecy:{ v:"Pondré enemistad entre ti y la mujer, y entre tu descendencia y la suya; esta te herirá en la cabeza, y tú la herirás en el talón.", r:"Génesis 3:15" },
+    fulfillment:{ v:"Y el Dios de paz aplastará pronto a Satanás bajo vuestros pies.", r:"Romanos 16:20" },
+    connection:"Con la posible excepción de Juan 3:16, ningún versículo de la Biblia es más crucial sobre Jesucristo. La 'descendencia de la mujer' que aplastaría la cabeza de la serpiente apunta directamente a Jesús — nacido de mujer (virgen), que en la cruz derrotó definitivamente el poder del diablo."
+  },
+  { name:"Éxodo", tag:"Pentateuco",
+    context:"En Egipto, Dios envió diez plagas sobre el Faraón. La última — la muerte de los primogénitos — se evitaría mediante una señal específica: la sangre de un cordero sin defecto pintada en los marcos de las puertas. Esas familias serían 'pasadas por alto' — la Pascua.",
+    prophecy:{ v:"La sangre os servirá de señal en las casas donde estéis; veré la sangre y pasaré de vosotros, y no habrá plaga destructora.", r:"Éxodo 12:13" },
+    fulfillment:{ v:"He aquí el Cordero de Dios, que quita el pecado del mundo.", r:"Juan 1:29" },
+    connection:"El cordero pascual — sin huesos quebrados, cuya sangre protegía de la muerte — es una de las imágenes más poderosas de Jesús en el AT. Pablo afirma directamente: 'Cristo, nuestra Pascua, fue sacrificado por nosotros' (1 Co 5:7). La sangre no estaba en la puerta por casualidad."
+  },
+  { name:"Levítico", tag:"Pentateuco",
+    context:"El Día de la Expiación (Yom Kippur) era el momento más solemne del calendario israelita. El Sumo Sacerdote — y solo él — entraba una vez al año al Lugar Santísimo para ofrecer sangre de animales por los pecados del pueblo. Era un ritual que debía repetirse año tras año.",
+    prophecy:{ v:"El sumo sacerdote entrará en el lugar santísimo con la sangre... para hacer expiación por sí mismo y por el pueblo.", r:"Levítico 16:15" },
+    fulfillment:{ v:"Cristo entró en el verdadero tabernáculo... ofreciéndose a sí mismo como sacrificio perfecto y eterno.", r:"Hebreos 9:11-12" },
+    connection:"El libro de Hebreos usa exactamente Levítico para explicar a Jesús: Él es el Sumo Sacerdote superior que entró al tabernáculo celestial — no con sangre de animales, sino con la suya propia. Y a diferencia de los sacrificios antiguos, el suyo no necesita repetirse: es eterno."
+  },
+  { name:"Números", tag:"Pentateuco",
+    context:"Los hijos de Israel llevaban años en el desierto y comenzaron a quejarse contra Dios y contra Moisés por falta de comida y agua — a pesar de toda la provisión divina. Como consecuencia, el Señor envió serpientes venenosas. Muchos murieron. El pueblo se arrepintió y clamó por ayuda.",
+    prophecy:{ v:"Moisés hizo una serpiente de bronce y la puso sobre un asta; y cuando alguna serpiente mordía a alguno, miraba a la serpiente de bronce y vivía.", r:"Números 21:9" },
+    fulfillment:{ v:"Como Moisés levantó la serpiente en el desierto, así es necesario que el Hijo del Hombre sea levantado, para que todo aquel que en él cree tenga vida eterna.", r:"Juan 3:14-15" },
+    connection:"El propio Jesús trazó esta conexión. Quien estaba mordido por la serpiente y miraba al bronce levantado — vivía. Quien está herido por el pecado y mira con fe a Cristo levantado en la cruz — recibe vida eterna. La curación no estaba en la serpiente en sí, sino en el acto de fe de mirar."
+  },
+  { name:"Deuteronomio", tag:"Pentateuco",
+    context:"Moisés era el mayor profeta que Israel había conocido — hablaba cara a cara con Dios. Antes de morir, profetizó que Dios levantaría otro profeta, de la propia nación israelita, que continuaría esa línea de revelación divina. Era una promesa que el pueblo guardó por siglos.",
+    prophecy:{ v:"Profeta de en medio de ti, de tus hermanos, como yo, te levantará el Señor tu Dios; a él oiréis.", r:"Deuteronomio 18:15" },
+    fulfillment:{ v:"Verdaderamente este es el profeta que había de venir al mundo.", r:"Juan 6:14" },
+    connection:"Tras la multiplicación de los panes, el pueblo reconoció inmediatamente a Jesús como el profeta de Deuteronomio. Pedro también cita este pasaje en Hechos 3:22-23 y lo aplica directamente a Cristo. Jesús es el profeta final — no solo transmite la palabra de Dios, sino que ES la Palabra de Dios encarnada."
+  },
+  { name:"Josué", tag:"Histórico",
+    context:"Josué se preparaba para la batalla de Jericó cuando tuvo un encuentro inesperado: un hombre de pie frente a él con una espada desenvainada en la mano. Josué preguntó: '¿Eres de los nuestros o de nuestros enemigos?' La respuesta lo cambió todo.",
+    prophecy:{ v:"Soy el príncipe del ejército de Jehová... Quita el calzado de tus pies, porque el lugar en que estás es santo.", r:"Josué 5:14-15" },
+    fulfillment:{ v:"Josué se postró sobre su rostro en tierra y lo adoró.", r:"Josué 5:14" },
+    connection:"Este es un claro ejemplo de cristofanía — aparición preencarnada de Cristo en el AT. Dos detalles cruciales: el Príncipe acepta adoración (solo Dios puede ser adorado), y ordena quitarse el calzado — las mismas palabras dichas a Moisés en la zarza ardiente (Éx 3:5). Josué estaba ante Dios."
+  },
+  { name:"Jueces", tag:"Histórico",
+    context:"El ángel del Señor se apareció a Manoa y su esposa estéril para anunciar el nacimiento de Sansón. Tras el encuentro, Manoa ofreció un cabrito a Dios. El misterioso visitante — que se había negado a revelar su nombre — hizo algo extraordinario.",
+    prophecy:{ v:"Y aconteció que cuando la llama subía del altar hacia el cielo, el ángel de Jehová subió en la llama del altar. Y Manoa dijo: Sin duda moriremos, porque hemos visto a Dios.", r:"Jueces 13:20-22" },
+    fulfillment:{ v:"A Dios nadie le vio jamás; el Hijo unigénito... él le ha dado a conocer.", r:"Juan 1:18" },
+    connection:"El ángel que asciende en la llama del sacrificio y acepta adoración es otra cristofanía. El asombro de Manoa — 'sin duda moriremos porque hemos visto a Dios' — confirma quién era el visitante. Anuncia un nacimiento sobrenatural, tal como el propio Jesús sería anunciado siglos después."
+  },
+  { name:"Rut", tag:"Histórico",
+    context:"Rut era una mujer moabita — una extranjera, de un pueblo históricamente enemigo de Israel. Después de que su esposo israelita muriera, podría haber vuelto a su pueblo. Pero eligió quedarse con su suegra Noemí y seguir al Dios de Israel. Una elección que le costó todo.",
+    prophecy:{ v:"Donde tú murieres, moriré yo, y allí seré sepultada. Haga conmigo Jehová lo que quisiere, que solo la muerte hará separación entre las dos.", r:"Rut 1:17" },
+    fulfillment:{ v:"Que los gentiles son coherederos en Cristo Jesús, miembros de un mismo cuerpo, y partícipes de la promesa.", r:"Efesios 3:6" },
+    connection:"Rut, la extranjera que abandona todo para abrazar un nuevo pueblo y una nueva fe, prefigura a Jesús — quien dejó el cielo y entró en un mundo extranjero para ofrecer gracia y adopción a todos los perdidos. Así como Rut encontró aceptación, pertenencia y nueva identidad en Israel, todos pueden encontrarla en Cristo."
+  },
+  { name:"1 Samuel", tag:"Histórico",
+    context:"Saúl, el primer rey de Israel, había desobedecido a Dios repetidamente. El Señor entonces envió al profeta Samuel a Belén — a una familia común, la casa de Jesé — para ungir al próximo rey. No sería ninguno de los hijos más imponentes, sino el más joven: David, el pastor.",
+    prophecy:{ v:"Jehová mira el corazón... Jehová se ha buscado un hombre conforme a su corazón.", r:"1 Samuel 13:14; 16:7" },
+    fulfillment:{ v:"Este es mi Hijo amado, en quien tengo complacencia.", r:"Mateo 3:17" },
+    connection:"David — el pastor humilde, ungido y rechazado antes de ser exaltado — es una de las más ricas prefiguraciones de Jesús. El padre declarando amor al hijo amado evoca tanto la unción de David como el bautismo de Jesús. Cristo es el verdadero Hijo conforme al corazón de Dios."
+  },
+  { name:"2 Samuel", tag:"Histórico",
+    context:"David había conquistado Jerusalén y quería construir un templo para Dios. Pero el Señor invirtió la propuesta: no sería David quien construiría una casa para Dios, sino Dios quien construiría una 'casa' — una dinastía — para David. Esta es la Alianza Davídica, el corazón del AT.",
+    prophecy:{ v:"Será afirmada tu casa y tu reino para siempre delante de tu rostro, y tu trono será estable eternamente.", r:"2 Samuel 7:16" },
+    fulfillment:{ v:"Reinará en la casa de Jacob para siempre, y su reino no tendrá fin.", r:"Lucas 1:33" },
+    connection:"Gabriel cita casi textualmente la promesa de 2 Samuel al anunciar a Jesús a María. El reino eterno prometido a David no pudo ser cumplido por ninguno de sus descendientes humanos — todos murieron. Solo Jesús, el Hijo de David y Hijo de Dios, cumple esta alianza literalmente."
+  },
+  { name:"1 Reyes", tag:"Histórico",
+    context:"Salomón construyó el templo en Jerusalén — la estructura más gloriosa del mundo antiguo. Revestido de oro, con querubines esculpidos, lleno de la presencia de Dios. Era el punto de encuentro entre el cielo y la tierra. Pero había una tensión: ¿podía Dios realmente habitar en un edificio hecho por manos humanas?",
+    prophecy:{ v:"Destruid este templo, y en tres días lo levantaré.", r:"Juan 2:19" },
+    fulfillment:{ v:"Mas él hablaba del templo de su cuerpo. Cuando resucitó de entre los muertos, sus discípulos se acordaron.", r:"Juan 2:21-22" },
+    connection:"El esplendor del templo de Salomón siempre fue una sombra del verdadero. Jesús señaló su propio cuerpo como el templo definitivo. Destruido en la crucifixión, levantado en la resurrección en tres días — exactamente como prometió. El templo de piedra era solo el boceto."
+  },
+  { name:"2 Reyes", tag:"Histórico",
+    context:"El registro de 2 Reyes es sombrío: rey tras rey de Israel y Judá fracasó en guardar el pacto de Dios. Incluso los buenos reyes tenían fallas profundas. El resultado fue el exilio — primero el norte a Asiria, luego el sur a Babilonia. La Ley no logró producir un pueblo fiel.",
+    prophecy:{ v:"No hubo rey como él... que se convirtiera a Jehová de todo corazón. Pero aun así, Jehová no se apartó del furor de su ira.", r:"2 Reyes 23:25-26 (paráfrasis)" },
+    fulfillment:{ v:"No vine para abrogar la ley, sino para cumplirla.", r:"Mateo 5:17" },
+    connection:"La interminable serie de reyes fallidos demuestra una verdad: ningún ser humano logra cumplir la Ley perfectamente. Esto evidencia la necesidad de un Rey diferente — Jesús, quien no solo enseñó la Ley, sino que fue el único en la historia que la cumplió en su totalidad, de principio a fin."
+  },
+  { name:"1 Crónicas", tag:"Histórico",
+    context:"Crónicas fue escrito para el pueblo que regresó del exilio babilónico. Necesitaban entender su identidad. El libro comienza con largas genealogías — no como burocracia, sino como teología: Dios no olvidó su promesa a David. La línea real estaba preservada.",
+    prophecy:{ v:"Y afirmaré su trono para siempre... Yo le seré padre, y él me será hijo.", r:"1 Crónicas 17:12-13" },
+    fulfillment:{ v:"Jesucristo, descendiente de David... declarado Hijo de Dios con poder por la resurrección.", r:"Romanos 1:3-4" },
+    connection:"Las genealogías de Crónicas trazan meticulosamente la línea real que culmina en Jesús. Pablo en Romanos une los dos hilos: hijo de David según la carne, Hijo de Dios según el Espíritu. La promesa de 1 Crónicas encuentra su cumplimiento único y definitivo en la persona de Cristo."
+  },
+  { name:"2 Crónicas", tag:"Histórico",
+    context:"Al inicio de 2 Crónicas, Salomón dedica el templo recién construido. En un momento dramático, la gloria de Dios — la Shekiná, la nube luminosa — desciende y llena el templo tan intensamente que los sacerdotes ni siquiera pueden entrar. Era la presencia de Dios habitando entre los hombres.",
+    prophecy:{ v:"Ahora he elegido y santificado esta casa, para que esté en ella mi nombre para siempre; y mis ojos y mi corazón estarán ahí para siempre.", r:"2 Crónicas 7:16" },
+    fulfillment:{ v:"Cristo es ministro del santuario y del verdadero tabernáculo, el cual erigió el Señor, y no el hombre.", r:"Hebreos 8:2" },
+    connection:"La gloria llenando el templo es la escena más grande de presencia divina en el AT. Juan 1:14 usa el mismo lenguaje: 'El Verbo se hizo carne y habitó (acampó) entre nosotros, y vimos su gloria.' Jesús es el templo viviente — donde Dios habita plenamente en forma humana."
+  },
+  { name:"Ezra", tag:"Histórico",
+    context:"Los israelitas vivían bajo dominio persa cuando el rey Ciro emitió un decreto sorprendente: el pueblo podría regresar a Jerusalén y reconstruir el templo que los babilonios habían destruido. Era un regreso imposible que se hizo realidad — una resurrección nacional.",
+    prophecy:{ v:"Reconstruid la casa de Jehová Dios de Israel — él es el Dios que está en Jerusalén.", r:"Ezra 1:3" },
+    fulfillment:{ v:"Destruid este templo, y en tres días lo levantaré... hablaba del templo de su cuerpo.", r:"Juan 2:19,21" },
+    connection:"La reconstrucción del templo tras su destrucción es una imagen profética de la resurrección de Jesús. El templo destruido por los babilonios fue reedificado en años. El templo del cuerpo de Cristo fue 'destruido' en la crucifixión y reedificado en tres días — un cumplimiento infinitamente mayor que el símbolo."
+  },
+  { name:"Nehemías", tag:"Histórico",
+    context:"Nehemías era copero del rey persa cuando supo que Jerusalén estaba en ruinas — sus murallas derribadas, sus puertas quemadas. Movido por compasión, lo dejó todo, regresó a su tierra y lideró la reconstrucción de las murallas en solo 52 días. Después, junto con Ezra, trajo al pueblo de vuelta a la Palabra de Dios.",
+    prophecy:{ v:"Nehemías y Ezra promovieron reformas para traer al pueblo de vuelta a la observancia de la ley de Dios, corrigiendo prácticas erróneas de adoración y de vida social.", r:"Nehemías 8:8; 13:30 (paráfrasis)" },
+    fulfillment:{ v:"Yo he venido para que tengan vida, y para que la tengan en abundancia.", r:"Juan 10:10" },
+    connection:"Nehemías es el reformador y restaurador — aquel que reconstruye lo que estaba destruido y trae al pueblo de vuelta a Dios. Cristo es el Reformador definitivo: no solo corrige prácticas externas, sino que ofrece un nuevo corazón (Ez 36:26), un nuevo camino de vida y una adoración en espíritu y verdad."
+  },
+  { name:"Ester", tag:"Histórico",
+    context:"Una joven judía huérfana se convierte en reina del Imperio Persa. Entonces se emite un decreto para exterminar a todos los judíos del imperio. Ester estaba en posición de intentar intervenir — pero acercarse al rey sin ser convocada era punible con la muerte. Su tío Mardoqueo la confrontó con palabras que resuenan hasta hoy.",
+    prophecy:{ v:"¿Y quién sabe si para esta hora has llegado a ser reina?", r:"Ester 4:14" },
+    fulfillment:{ v:"Para esto he llegado a esta hora... el Padre que me envió, él me dio mandamiento de lo que he de decir.", r:"Juan 12:27,49" },
+    connection:"Las palabras de Mardoqueo a Ester sobre su papel en el plan de Dios son una prefiguración del papel supremo de Jesús. Así como Ester fue 'colocada en posición' para un momento crítico de salvación, Jesús vino exactamente en el momento correcto (Gá 4:4) para rescatar a la humanidad de una sentencia de muerte."
+  },
+  { name:"Job", tag:"Poético",
+    context:"Job perdió todo: hijos, riquezas, salud. Sus amigos argumentaron que debía estar sufriendo por pecado. Pero en medio de la mayor angustia, Job hizo una declaración de fe que dejó a los lectores asombrados durante milenios — una certeza que superaba su comprensión del sufrimiento presente.",
+    prophecy:{ v:"Yo sé que mi Redentor vive, y al fin se levantará sobre el polvo... en mi carne veré a Dios; yo mismo le veré, y mis ojos lo verán, y no otro.", r:"Job 19:25-27" },
+    fulfillment:{ v:"Yo soy la resurrección y la vida; el que cree en mí, aunque esté muerto, vivirá.", r:"Juan 11:25" },
+    connection:"Este es probablemente el versículo más profético de Job. En el punto más alto del sufrimiento, sin entender el porqué, Job declara fe en un Redentor vivo que se levantará — y que él, en su propia carne resucitada, lo verá. Es una poderosa anticipación de la resurrección de Cristo y de la resurrección de los creyentes."
+  },
+  { name:"Salmos", tag:"Poético",
+    context:"El Salmo 22 comienza con palabras de abandono total y describe un sufrimiento físico y emocional específico con detalles perturbadores: huesos dislocados, corazón derretido como cera, sed extrema, manos y pies horadados, ropas repartidas por sorteo. David escribió esto aproximadamente 1000 años antes de Cristo.",
+    prophecy:{ v:"Dios mío, Dios mío, ¿por qué me has desamparado?... Horadaron mis manos y mis pies... Repartieron entre sí mis vestidos, y sobre mi ropa echaron suertes.", r:"Salmo 22:1,16,18" },
+    fulfillment:{ v:"Y a la hora novena Jesús clamó a gran voz: Eloi, Eloi, ¿lama sabactani? que traducido es: Dios mío, Dios mío, ¿por qué me has desamparado?", r:"Marcos 15:34" },
+    connection:"El Salmo 22 es llamado 'el salmo de la crucifixión'. Es asombroso: la crucifixión aún no existía como método de ejecución cuando David lo escribió. Aun así, describió la perforación de manos y pies, la división de ropas por sorteo, la dislocación de huesos. Jesús citó la apertura de este salmo en la cruz — confirmando que era sobre Él."
+  },
+  { name:"Proverbios", tag:"Poético",
+    context:"Agur, autor de Proverbios 30, comienza confesando su propia ignorancia ante Dios. Luego hace una serie de preguntas retóricas sobre quién podría realmente conocer a Dios — preguntas que suenan como un desafío, pero que en realidad apuntan a algo más allá de la comprensión humana.",
+    prophecy:{ v:"¿Quién subió al cielo y descendió? ¿Quién encerró los vientos en sus puños?... ¿Cuál es su nombre, y el nombre de su hijo, si lo sabes?", r:"Proverbios 30:4" },
+    fulfillment:{ v:"Nadie subió al cielo, sino el que descendió del cielo, el Hijo del Hombre.", r:"Juan 3:13" },
+    connection:"Agur hace preguntas aparentemente imposibles: ¿quién descendió y subió al cielo? ¿Cuál es el nombre del Hijo? Siglos después, Jesús responde directamente: Él es quien descendió del cielo y subirá de vuelta. El nombre del Hijo: Jesús. La pregunta de Proverbios 30 encuentra su única respuesta posible en la persona de Cristo."
+  },
+  { name:"Eclesiastés", tag:"Poético",
+    context:"Eclesiastés es el libro más honesto de la Biblia sobre la condición humana. El Predicador — probablemente Salomón — probó todo: sabiduría, placer, trabajo, riqueza. Conclusión: 'vanidad de vanidades, todo es vanidad'. Sin Dios, nada tiene sentido permanente bajo el sol.",
+    prophecy:{ v:"Vanidad de vanidades, todo es vanidad... Todo el trabajo del hombre es para su boca, y con todo eso su alma no se sacia.", r:"Eclesiastés 1:2; 6:7" },
+    fulfillment:{ v:"Yo he venido para que tengan vida, y para que la tengan en abundancia.", r:"Juan 10:10" },
+    connection:"Eclesiastés hace el diagnóstico; Jesús trae la cura. El libro es una preparación: muestra que la vida sin Dios es vacía, sin importar lo que se logre. La búsqueda humana de significado, satisfacción y permanencia — descrita tan realísticamente en Eclesiastés — solo encuentra respuesta en Cristo, quien ofrece vida con propósito eterno."
+  },
+  { name:"Cantares", tag:"Poético",
+    context:"El Cantar de los Cantares es un libro de amor — intenso, poético, a veces sorprendente para un texto sagrado. Un rey apasionadamente enamorado de una joven sencilla llamada la Sulamita. A pesar de la diferencia de estatus, él la busca, la corteja, la declara amada. Y al final, una de las afirmaciones más profundas de la Escritura.",
+    prophecy:{ v:"Fuerte es como la muerte el amor; duros como el sepulcro los celos; sus brasas, brasas de fuego, fuerte llama.", r:"Cantares 8:6" },
+    fulfillment:{ v:"Nadie tiene mayor amor que este, que uno ponga su vida por sus amigos.", r:"Juan 15:13" },
+    connection:"La tradición judía siempre leyó Cantares como alegoría del amor de Dios por Israel. El NT lo relee como imagen del amor de Cristo por la Iglesia. El rey que ama a la Sulamita a pesar de la diferencia de estatus apunta a Jesús — el Rey de reyes que amó tanto a su 'novia' (la Iglesia) que su amor probó ser más fuerte que la propia muerte."
+  },
+  { name:"Isaías", tag:"Profético",
+    context:"Isaías es llamado 'el evangelista del Antiguo Testamento' — y no sin razón. Escribiendo alrededor del año 700 a.C., profetizó sobre el Mesías con una especificidad que incluso los propios rabinos reconocían como excepcional. Nacimiento, ministerio, sufrimiento, muerte y resurrección — todo está ahí.",
+    prophecy:{ v:"He aquí que la virgen concebirá, y dará a luz un hijo, y llamará su nombre Emanuel... mas él herido fue por nuestras rebeliones, molido por nuestros pecados... y por su llaga fuimos nosotros curados.", r:"Isaías 7:14; 53:5" },
+    fulfillment:{ v:"Todo esto aconteció para que se cumpliese lo dicho por el Señor por medio del profeta.", r:"Mateo 1:22" },
+    connection:"Isaías 53 — el capítulo del 'Siervo Sufriente' — describe con tal precisión la crucifixión que algunos llegaron a cuestionar si fue escrito después. Pero los Rollos del Mar Muerto confirman que es anterior a Cristo. Nacimiento virginal, nombre Emanuel, milagros de sanidad, sufrimiento sustitutorio, resurrección: Isaías pintó el retrato de Jesús 700 años antes."
+  },
+  { name:"Jeremías", tag:"Profético",
+    context:"Jeremías profetizó durante los años más oscuros de Judá — la nación se dirigía al exilio. Pero en medio de las profecías de juicio, anunció algo que nadie esperaba: Dios haría un Nuevo Pacto — diferente del pacto del Sinaí que el pueblo siempre quebrantaba.",
+    prophecy:{ v:"Levantaré a David renuevo justo, y reinará como rey, y será dichoso, y hará juicio y justicia en la tierra.", r:"Jeremías 23:5" },
+    fulfillment:{ v:"Jesucristo, hijo de David, hijo de Abraham.", r:"Mateo 1:1" },
+    connection:"El 'Renuevo Justo' de Jeremías es un título mesiánico claro. La línea davídica parecía cortada con el exilio — pero Jeremías anunció que de alguna forma produciría un Rey diferente de todos los demás: sabio, justo, y cuyo nombre sería 'Jehová, justicia nuestra'. Jesús es ese Renuevo."
+  },
+  { name:"Lamentaciones", tag:"Profético",
+    context:"Lamentaciones fue escrito por Jeremías poco después de la destrucción de Jerusalén por los babilonios. Es un llanto — literalmente. Cada capítulo es un poema acróstico hebreo. La ciudad está en ruinas, el pueblo en exilio, el templo quemado. El libro no tiene final feliz, pero tiene un giro central.",
+    prophecy:{ v:"Mirad, oh Jehová, y ved a quién así habéis tratado... Jehová me afligió en el día de su ardiente furor.", r:"Lamentaciones 1:12" },
+    fulfillment:{ v:"Cristo padeció el sufrimiento y el rechazo por nuestros pecados... y por su herida fuisteis sanados.", r:"1 Pedro 2:24" },
+    connection:"Las palabras de Lamentaciones 1:12 — 'Mirad si hay dolor como mi dolor' — fueron usadas por la tradición cristiana como voz de Cristo en la cruz. El sufrimiento de Jerusalén prefigura el sufrimiento del Mesías que cargaría la aflicción de toda la humanidad. Pero así como Lamentaciones tiene su giro ('Nuevas son cada mañana las misericordias de Dios'), Cristo transforma la muerte en resurrección."
+  },
+  { name:"Ezequiel", tag:"Profético",
+    context:"Ezequiel profetizó durante el exilio en Babilonia. En medio de visiones extraordinarias (la rueda de fuego, el valle de los huesos secos), pronunció una de las promesas más directas sobre el Mesías: Dios enviaría un solo pastor para cuidar del rebaño que los líderes de Israel habían tratado con negligencia y explotación.",
+    prophecy:{ v:"Y levantaré sobre ellas a un pastor, y él las apacentará; mi siervo David, él las apacentará... yo Jehová seré su Dios, y mi siervo David, príncipe entre ellos.", r:"Ezequiel 34:23-24" },
+    fulfillment:{ v:"Yo soy el buen pastor; el buen pastor su vida da por las ovejas.", r:"Juan 10:11" },
+    connection:"Jesús se identifica como el Buen Pastor de Ezequiel 34. La profecía habla de 'mi siervo David' — no el David histórico ya muerto, sino el Mesías de la línea de David. Jesús cumple cada detalle: cuida de las ovejas, las conoce por nombre, las busca cuando se pierden, y da su propia vida por ellas."
+  },
+  { name:"Daniel", tag:"Profético",
+    context:"Daniel recibió visiones del fin de los tiempos. En la visión más impactante del capítulo 7, vio los reinos humanos representados como bestias violentas. Pero entonces apareció una figura completamente diferente — no una bestia, sino un ser humano — viniendo en las nubes del cielo ante el Anciano de Días.",
+    prophecy:{ v:"Miraba yo en la visión de la noche, y he aquí con las nubes del cielo venía uno como un hijo de hombre... y le fue dado dominio, gloria y reino, para que todos los pueblos, naciones y lenguas le sirvieran; su dominio es dominio eterno.", r:"Daniel 7:13-14" },
+    fulfillment:{ v:"Veréis al Hijo del Hombre sentado a la diestra del poder de Dios, y viniendo en las nubes del cielo.", r:"Mateo 26:64" },
+    connection:"'Hijo del Hombre' fue el título favorito de Jesús — lo usó aproximadamente 80 veces en los Evangelios. Cuando Jesús usó este título ante el sumo sacerdote, fue acusado de blasfemia — porque todos entendieron la referencia a Daniel 7 y que Él se estaba identificando con ese ser que recibe adoración universal y reino eterno."
+  },
+  { name:"Oseas", tag:"Profético",
+    context:"Dios ordenó algo inusual a Oseas: casarse con una prostituta llamada Gomer, quien sería infiel a su esposo. No era una metáfora — era una historia real que servía de parábola viviente. Después de que Gomer lo abandonara, Dios ordenó que Oseas la comprara de vuelta — incluso después de todo.",
+    prophecy:{ v:"Y me dijo Jehová otra vez: Ve, ama a una mujer amada de su compañero, aunque adúltera, como ama Jehová a los hijos de Israel.", r:"Oseas 3:1" },
+    fulfillment:{ v:"Cristo amó a la iglesia, y se entregó a sí mismo por ella, para santificarla.", r:"Efesios 5:25-26" },
+    connection:"La historia de Oseas y Gomer es una de las más poderosas prefiguraciones del Evangelio en el AT. Así como Oseas compra de vuelta a su esposa infiel — no porque ella lo mereciera, sino por amor redentor — Cristo rescata y redime a su novia (la Iglesia) incluso en plena infidelidad. Esto es gracia."
+  },
+  { name:"Joel", tag:"Profético",
+    context:"Joel describió una plaga de langostas devastadora como preludio del 'Día de Jehová' — un tiempo de juicio. Pero en el centro de la profecía había una promesa extraordinaria más allá del juicio: un derramamiento del Espíritu de Dios que iría más allá de los profetas y sacerdotes.",
+    prophecy:{ v:"Y después de esto derramaré mi Espíritu sobre toda carne, y profetizarán vuestros hijos y vuestras hijas... y aun sobre los siervos y las siervas derramaré mi Espíritu.", r:"Joel 2:28-29" },
+    fulfillment:{ v:"Mas esto es lo dicho por el profeta Joel... y todos fueron llenos del Espíritu Santo.", r:"Hechos 2:16,4" },
+    connection:"En el día de Pentecostés, Pedro se levanta y dice: 'Esto es lo dicho por el profeta Joel.' El derramamiento del Espíritu prometido por Joel — sobre toda carne, hombres y mujeres, libres y esclavos — fue inaugurado por Jesús tras su resurrección y ascensión. Pentecostés es cumplimiento directo de Joel."
+  },
+  { name:"Amós", tag:"Profético",
+    context:"Amós era pastor de Tecoa cuando Dios lo llamó para profetizar al reino del Norte. Su mensaje era duro: Israel se había alejado de la justicia social y de la fidelidad a Dios. El juicio vendría. Pero al final, Amós profetizó restauración — específicamente de la línea de David.",
+    prophecy:{ v:"En aquel tiempo levantaré el tabernáculo caído de David, y cerraré sus portillos y levantaré sus ruinas, y lo edificaré como en el tiempo pasado.", r:"Amós 9:11" },
+    fulfillment:{ v:"Simón ha contado cómo Dios visitó por primera vez a los gentiles... y con esto concuerdan las palabras de los profetas, como está escrito: Después de esto volveré y reedificaré el tabernáculo de David, que está caído.", r:"Hechos 15:14-16" },
+    connection:"En el Concilio de Jerusalén (Hechos 15), Santiago cita exactamente Amós 9:11 para defender que la inclusión de los gentiles en el pueblo de Dios estaba prevista en las Escrituras. La 'reconstrucción del tabernáculo de David' es Jesús — por la resurrección y por la misión a los gentiles que Él inauguró."
+  },
+  { name:"Abdías", tag:"Profético",
+    context:"Abdías es el libro más corto del AT — solo 21 versículos. Es una profecía contra Edom, nación descendiente de Esaú que celebró la caída de Jerusalén y colaboró con sus enemigos. Pero además del juicio de Edom, el libro termina con una visión del reinado final de Dios.",
+    prophecy:{ v:"Y el reino será de Jehová.", r:"Abdías 1:21" },
+    fulfillment:{ v:"El reino del mundo ha venido a ser de nuestro Señor y de su Cristo; y él reinará por los siglos de los siglos.", r:"Apocalipsis 11:15" },
+    connection:"La última frase de Abdías — 'el reino será de Jehová' — es una de las declaraciones más concisas y poderosas del AT. Resuena directamente en Apocalipsis 11:15. El juicio de las naciones y el establecimiento del reinado de Dios tienen su cumplimiento definitivo en Cristo — el Rey que vendrá a reinar."
+  },
+  { name:"Jonás", tag:"Profético",
+    context:"Jonás fue enviado a Nínive pero huyó en dirección contraria. Una tormenta, ser arrojado al mar, y entonces un gran pez se tragó al profeta. Tres días y tres noches en las profundidades. Después — libertad. Jonás fue a Nínive, predicó, y la ciudad entera se arrepintió. Pero la historia se haría famosa por otro motivo.",
+    prophecy:{ v:"Y estuvo Jonás en el vientre del pez tres días y tres noches.", r:"Jonás 1:17" },
+    fulfillment:{ v:"Porque como estuvo Jonás en el vientre del gran pez tres días y tres noches, así estará el Hijo del Hombre en el corazón de la tierra tres días y tres noches.", r:"Mateo 12:40" },
+    connection:"El propio Jesús citó a Jonás como señal profética de su muerte y resurrección. Las autoridades religiosas pedían una señal; Jesús dijo que solo recibirían 'la señal de Jonás'. Tres días en las profundidades — después vida. La experiencia de Jonás en el pez era un ensayo para la sepultura y resurrección de Cristo."
+  },
+  { name:"Miqueas", tag:"Profético",
+    context:"Miqueas era contemporáneo de Isaías y profetizó durante el período de crisis asiria. Mientras las grandes ciudades temblaban, él volvió sus ojos hacia una ciudad pequeña y aparentemente irrelevante en el contexto político. E hizo una de las profecías más específicas del AT.",
+    prophecy:{ v:"Pero tú, Belén Efrata, pequeña entre las familias de Judá, de ti me saldrá el que será Señor en Israel; y sus salidas son desde el principio, desde los días de la eternidad.", r:"Miqueas 5:2" },
+    fulfillment:{ v:"Jesús nació en Belén de Judea... entonces Herodes llamó en secreto a los magos... y les preguntó dónde había de nacer el Cristo. Y ellos le dijeron: En Belén de Judea; porque así está escrito por el profeta.", r:"Mateo 2:1,4-5" },
+    connection:"Cuando Herodes preguntó a los escribas dónde nacería el Mesías, citaron inmediatamente Miqueas 5:2. La profecía era conocida. Belén — ciudad de David — sería la cuna del descendiente eterno de David. Siglos después, un censo romano llevó a José y María exactamente a esa ciudad, en el momento exacto."
+  },
+  { name:"Nahúm", tag:"Profético",
+    context:"Nahúm profetizó la caída de Nínive — la capital de Asiria, el imperio más brutal del mundo antiguo. Pero antes del juicio, el libro se abre con una de las más bellas descripciones del carácter de Dios en el AT: su ira contra la maldad y su bondad para los que confían en él.",
+    prophecy:{ v:"Bueno es Jehová para fortaleza en el día de la angustia; y conoce a los que en él confían.", r:"Nahúm 1:7" },
+    fulfillment:{ v:"Jesús juzgará a las naciones con justicia, pero es el refugio de los que vienen a él.", r:"Juan 5:22; Mateo 11:28" },
+    connection:"Nahúm revela la doble naturaleza de Dios que encuentra su clímax en Cristo: juicio perfecto sobre la maldad, y bondad perfecta para quienes confían en él. En la cruz, ambas dimensiones se encuentran: el juicio que el pecado merecía cayó sobre Jesús; la bondad que no merecemos nos es ofrecida."
+  },
+  { name:"Habacuc", tag:"Profético",
+    context:"Habacuc es único: es un profeta que debate con Dios. Cuestiona por qué Dios permite la injusticia en Israel — y luego queda aún más perplejo cuando Dios dice que usará a los babilonios (aún más impíos) como instrumento de juicio. La respuesta de Dios es simple, pero lo transforma todo.",
+    prophecy:{ v:"He aquí que se enaltece el de alma soberbia... mas el justo por su fe vivirá.", r:"Habacuc 2:4" },
+    fulfillment:{ v:"En el evangelio la justicia de Dios se revela por fe y para fe, como está escrito: Mas el justo por la fe vivirá.", r:"Romanos 1:17" },
+    connection:"Este versículo de Habacuc es citado tres veces en el NT (Ro 1:17, Gá 3:11, He 10:38) — probablemente el versículo del AT más central para la teología cristiana. Fue también el versículo que Martín Lutero leyó y que desencadenó la Reforma Protestante. La justificación por la fe — el corazón del Evangelio — está en Habacuc."
+  },
+  { name:"Sofonías", tag:"Profético",
+    context:"Sofonías profetizó durante el reinado de Josías, antes de las grandes reformas. El libro describe el Día de Jehová como juicio sobre todas las naciones — incluyendo Judá. Pero al final surge un texto de alegría y restauración que es uno de los pasajes más conmovedores del AT.",
+    prophecy:{ v:"Jehová tu Dios está en medio de ti, poderoso, él salvará; se gozará sobre ti con alegría, callará de amor, se gozará sobre ti con cánticos.", r:"Sofonías 3:17" },
+    fulfillment:{ v:"Porque el Hijo del Hombre vino a buscar y a salvar lo que se había perdido.", r:"Lucas 19:10" },
+    connection:"Sofonías 3:17 pinta una imagen sorprendente: Dios en medio del pueblo, no como juez severo, sino como héroe salvador que se alegra con cánticos. Juan 1:14 dice que el Verbo 'habitó entre nosotros'. Jesús es exactamente ese Dios en medio del pueblo — Emanuel, el héroe Salvador que vino a buscar a los perdidos con alegría."
+  },
+  { name:"Hageo", tag:"Profético",
+    context:"El pueblo regresó del exilio y reanudó la reconstrucción del templo, pero se detuvo por oposición y desánimo. El nuevo templo estaba muy lejos del esplendor del templo de Salomón. Los ancianos lloraban de decepción. Hageo entonces trajo una palabra de aliento con una promesa extraordinaria.",
+    prophecy:{ v:"La gloria de esta casa segunda será mayor que la de la primera, ha dicho Jehová de los ejércitos; y daré paz en este lugar.", r:"Hageo 2:9" },
+    fulfillment:{ v:"Y vimos su gloria, gloria como del unigénito del Padre, lleno de gracia y de verdad.", r:"Juan 1:14" },
+    connection:"¿Cómo podría el segundo templo — menor y menos glorioso — tener una gloria mayor que el de Salomón? La respuesta: porque Jesús entró en él. La gloria del segundo templo no estaba en su arquitectura, sino en quién lo visitó. Cuando Jesús enseñó allí, sanó allí, expulsó a los mercaderes — la presencia de Dios en persona cumplió Hageo 2:9."
+  },
+  { name:"Zacarías", tag:"Profético",
+    context:"Zacarías es el libro más mesiánico de los profetas menores — lleno de visiones simbólicas y profecías específicas sobre el Mesías. Una de las más notables describe la entrada real del Rey en Jerusalén, con detalles que parecían improbables para un soberano del mundo antiguo.",
+    prophecy:{ v:"Alégrate mucho, hija de Sion; da voces de júbilo, hija de Jerusalén; he aquí tu rey vendrá a ti, justo y salvador, humilde, y montado sobre un asno.", r:"Zacarías 9:9" },
+    fulfillment:{ v:"Esto aconteció para que se cumpliese lo dicho por el profeta: Decid a la hija de Sion: He aquí, tu Rey viene a ti, manso, y sentado sobre una asna.", r:"Mateo 21:4-5" },
+    connection:"Mateo cita Zacarías 9:9 explícitamente en la entrada triunfal de Jesús en Jerusalén. Un rey conquistador llegaría a caballo — señal de poder militar. Pero el Rey Mesías de Zacarías llega en un asno — símbolo de paz, no de guerra. Jesús eligió deliberadamente cumplir esta profecía, declarando públicamente quién era Él."
+  },
+  { name:"Malaquías", tag:"Profético",
+    context:"Malaquías es el último libro del AT — y termina con una promesa y un silencio. La promesa: Dios enviaría un mensajero antes del Día de Jehová. Después de eso, 400 años de silencio profético en Israel. Hasta que en el desierto de Judea, un hombre comenzó a predicar.",
+    prophecy:{ v:"He aquí, yo envío mi mensajero, el cual preparará el camino delante de mí; y vendrá súbitamente a su templo el Señor a quien vosotros buscáis.", r:"Malaquías 3:1" },
+    fulfillment:{ v:"Este es aquel de quien habló el profeta Isaías, cuando dijo: Voz del que clama en el desierto: Preparad el camino del Señor.", r:"Mateo 3:3" },
+    connection:"El último profeta del AT anuncia un mensajero que preparará el camino para el Señor. Juan el Bautista es explícitamente identificado como ese mensajero por los cuatro Evangelios. La historia del AT termina en expectativa — y el NT se abre con el cumplimiento. El silencio de 400 años se rompe con: 'He aquí el Cordero de Dios.'"
+  }
 ];
-function ld(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}}
-function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 
-let verses=ld('mv_v',DEF), scores=ld('mv_s',{}), mode='flip', queue=[], qIdx=0, flipped=false;
+const QUIZ = [
+  { q:"¿Qué libro contiene la primera promesa mesiánica de la Biblia — el 'Protoevangelio' — donde Dios promete que un descendiente de la mujer aplastaría a Satanás?", opts:["Éxodo","Génesis","Isaías","Deuteronomio"], ans:1,
+    exp:"Génesis 3:15 es el Protoevangelio — la primera buena noticia. La 'descendencia de la mujer' que aplastaría la cabeza de la serpiente apunta a Jesús en la cruz." },
+  { q:"En el libro de Números, ¿qué objeto levantado en el desierto usó Jesús para explicar su propia crucifixión en Juan 3:14?", opts:["El Arca del Pacto","El pan del desierto","La serpiente de bronce","El tabernáculo"], ans:2,
+    exp:"Jesús dijo: 'Como Moisés levantó la serpiente en el desierto, así el Hijo del Hombre debe ser levantado.' Quien miraba a la serpiente de bronce — vivía." },
+  { q:"El Salmo 22 es llamado 'el salmo de la crucifixión'. ¿Cuál de estas imágenes NO está en él?", opts:["Perforación de manos y pies","División de vestiduras por sorteo","Una virgen concebirá","'Dios mío, ¿por qué me has desamparado?'"], ans:2,
+    exp:"'Una virgen concebirá' está en Isaías 7:14, no en el Salmo 22. Los otros tres detalles están en el Salmo 22 y se cumplieron literalmente en la crucifixión." },
+  { q:"¿Qué profeta nombró a Belén como la ciudad de nacimiento del Mesías — con precisión suficiente para que los escribas de Herodes lo supieran responder de inmediato?", opts:["Isaías","Jeremías","Miqueas","Zacarías"], ans:2,
+    exp:"Miqueas 5:2 es citado directamente en Mateo 2:5-6. Cuando Herodes preguntó dónde nacería el Cristo, los sacerdotes respondieron de inmediato con Miqueas." },
+  { q:"La experiencia de Jonás en el vientre del pez durante 3 días fue usada por el propio Jesús como prefiguración de qué evento?", opts:["El bautismo de Jesús","La transfiguración en el monte","La resurrección después de tres días","El ayuno de 40 días en el desierto"], ans:2,
+    exp:"'Como Jonás estuvo 3 días en el vientre del pez, el Hijo del Hombre estará 3 días en el corazón de la tierra.' (Mateo 12:40) El propio Jesús trazó esta conexión." },
+  { q:"¿Qué versículo de Habacuc fue citado 3 veces en el NT e inspiró la teología de la Reforma Protestante?", opts:["Dios es fortaleza en el día de la angustia","El justo por su fe vivirá","El reino será de Jehová","Daré paz en este lugar"], ans:1,
+    exp:"Habacuc 2:4 es citado en Romanos 1:17, Gálatas 3:11 y Hebreos 10:38. Fue también el versículo que iluminó a Martín Lutero sobre la justificación por la fe." },
+  { q:"En Zacarías, ¿cómo entraría el Rey mesiánico a Jerusalén — y por qué era esto sorprendente?", opts:["En caballo blanco — señal de paz","A pie — señal de humildad","Montado en un asno — señal de paz, no de guerra","En carro de fuego — señal de poder divino"], ans:2,
+    exp:"Un rey conquistador llegaría a caballo. El Mesías de Zacarías eligió un asno — símbolo de paz. Mateo 21 cita esta profecía explícitamente en la entrada triunfal de Jesús." },
+  { q:"Daniel 7 presenta la visión del 'Hijo del Hombre' recibiendo un reino eterno. ¿Cuántas veces usó Jesús este título en los Evangelios?", opts:["10 veces","Solo 3 veces — una por Evangelio","Aproximadamente 80 veces","Nunca — era un título que otros usaban para Él"], ans:2,
+    exp:"Jesús usó 'Hijo del Hombre' alrededor de 80 veces — era su título favorito. Cuando lo usó ante el sumo sacerdote citando Daniel 7, fue acusado de blasfemia." },
+  { q:"El matrimonio de Oseas con Gomer, la esposa infiel que él compró de vuelta, prefigura qué verdad central del Evangelio?", opts:["La segunda venida de Cristo en juicio","El amor redentor de Cristo por la Iglesia — gracia sin merecimiento","La creación del mundo por amor","La resurrección de los creyentes en el último día"], ans:1,
+    exp:"Efesios 5:25 cita directamente el amor de Cristo por la Iglesia como modelo del amor del esposo. Oseas compró a Gomer de vuelta no porque ella lo mereciera, sino por amor — esto es gracia." },
+  { q:"Malaquías es el último libro del AT y termina prometiendo un mensajero que prepararía el camino. Después de esa promesa, ¿cuántos años Israel quedó sin un profeta?", opts:["100 años","200 años","400 años","70 años — el periodo del exilio"], ans:2,
+    exp:"Después de Malaquías, vinieron 400 años de silencio profético. El siguiente profeta fue Juan el Bautista — a quien los cuatro Evangelios identifican como el mensajero prometido en Malaquías 3:1." }
+];
 
-const TABS=['guia','study','tecnicas','progress','add'];
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('nav button').forEach((b,i)=>b.classList.toggle('active',TABS[i]===id));
-  if(id==='progress')renderProg();
-  if(id==='add')renderList();
+let done = new Set();
+let openIdx = null;
+let qIdx = 0, score = 0, quizActive = false;
+
+function updateProgress(){
+  const n = done.size;
+  document.getElementById('prog-text').textContent = `${n} de 39`;
+  document.getElementById('prog-fill').style.width = `${(n/39)*100}%`;
+  if(n===39 && !quizActive){ quizActive=true; startQuiz(); }
 }
 
-function togTec(c){c.classList.toggle('open');}
-function togGuia(c){c.classList.toggle('open');}
+const SECTIONS = [
+  {label:'Pentateuco', range:[0,4]},
+  {label:'Libros Históricos', range:[5,16]},
+  {label:'Libros Poéticos', range:[17,22]},
+  {label:'Libros Proféticos', range:[23,38]}
+];
 
-async function askIA(){
-  const q=document.getElementById('chat-inp').value.trim();
-  if(!q)return;
-  const r=document.getElementById('chat-resp'),b=document.getElementById('chat-btn');
-  r.textContent='Pensando…';r.className='loading';b.disabled=true;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,
-        system:'Você é um especialista em memorização bíblica. Responda em português brasileiro, de forma prática e encorajadora. Máximo 5 parágrafos curtos. Use exemplos com versículos quando possível.',
-        messages:[{role:'user',content:q}]})});
-    const d=await res.json();
-    r.textContent=d.content?.[0]?.text||'Sem resposta. Tente novamente.';r.className='';
-  }catch{r.textContent='Erro de conexão. Tente novamente.';r.className='';}
-  b.disabled=false;
-}
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='chat-inp')askIA();});
-
-async function fetchVerse(){
-  const ref=document.getElementById('inp-ref').value.trim();
-  if(!ref){toast('Digite a referência primeiro');return;}
-  const st=document.getElementById('ai-status'),btn=document.getElementById('fetch-btn');
-  st.textContent='✦ Buscando…';st.style.color='var(--muted2)';btn.disabled=true;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,
-        system:'Você é um auxiliar bíblico. Responda APENAS com o texto exato do versículo em português, versão NVI. Sem introdução, sem aspas, sem nome da versão — apenas o texto puro.',
-        messages:[{role:'user',content:ref}]})});
-    const d=await res.json();
-    const t=d.content?.[0]?.text?.trim();
-    if(t){document.getElementById('inp-text').value=t;st.textContent='✓ Encontrado — confira e adicione';st.style.color='var(--green)';}
-    else throw 0;
-  }catch{st.textContent='Não encontrado. Digite manualmente.';st.style.color='var(--red)';}
-  btn.disabled=false;
-}
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='inp-ref')fetchVerse();});
-
-function bldQ(){
-  return [...verses].sort((a,b)=>{
-    const sa=scores[a.id]||{},sb=scores[b.id]||{};
-    return ((sb.forgot||0)*3+(sb.almost||0)-(sb.knew||0)*2)-((sa.forgot||0)*3+(sa.almost||0)-(sa.knew||0)*2);
+function renderTrail(){
+  const trail = document.getElementById('trail');
+  SECTIONS.forEach(sec=>{
+    const lbl = document.createElement('div');
+    lbl.className = 'section-label';
+    lbl.textContent = sec.label;
+    trail.appendChild(lbl);
+    const wrap = document.createElement('div');
+    wrap.className = 'scroll-container';
+    for(let i=sec.range[0];i<=sec.range[1];i++){
+      wrap.appendChild(buildScroll(i));
+    }
+    trail.appendChild(wrap);
   });
 }
-function setMode(m){
-  mode=m;queue=bldQ();qIdx=0;flipped=false;
-  document.querySelectorAll('.mode-bar button').forEach((b,i)=>b.classList.toggle('active',['flip','gaps','ref'][i]===m));
-  renderStudy();
-}
-function renderStudy(){
-  const el=document.getElementById('study-content');
-  if(!verses.length){el.innerHTML='<div class="empty">Nenhum versículo ainda.<br>Adicione na aba <strong style="color:var(--gold)">Versículos</strong>.</div>';return;}
-  queue=queue.length?queue:bldQ();
-  const v=queue[qIdx%queue.length];
-  if(mode==='flip')rFlip(el,v);
-  else if(mode==='gaps')rGaps(el,v);
-  else rRef(el,v);
-}
-function rFlip(el,v){
-  el.innerHTML=`
-  <p class="card-counter">VERSÍCULO ${(qIdx%queue.length)+1} DE ${queue.length}</p>
-  <div class="card-area"><div class="card-inner ${flipped?'flipped':''}" onclick="flip()">
-    <div class="card-front">
-      <div class="card-chip">Referência</div>
-      <div class="card-ref-big">${v.ref}</div>
-      <div class="card-hint">Toque para revelar o versículo</div>
+
+function buildScroll(i){
+  const b = BOOKS[i];
+  const isDone = done.has(i);
+  const isOpen = openIdx===i;
+
+  const item = document.createElement('div');
+  item.className = `scroll-item unlocked ${isDone?'done':''}`;
+  item.id = `s${i}`;
+
+  item.innerHTML = `
+    <div class="scroll-roller"></div>
+    <div class="scroll-face">
+      <div class="num-badge">${isDone?'✓':i+1}</div>
+      <div class="face-text">
+        <div class="face-book">${b.name}</div>
+        <div class="face-tag">${b.tag}</div>
+      </div>
+      <div class="face-arrow">▾</div>
     </div>
-    <div class="card-back">
-      <div class="card-chip">Versículo</div>
-      <div class="card-text">${v.text}</div>
-      <div class="card-ref">${v.ref}</div>
+    <div class="scroll-body" style="max-height:${isOpen?'900px':'0'}">
+      <div class="aged-lines"></div>
+      <div class="scroll-inner">
+        <div class="context-block">
+          <div class="ctx-label">📜 Contexto</div>
+          <div class="ctx-text">${b.context}</div>
+        </div>
+        <div class="pf-grid">
+          <div class="pf-card pf-prophecy">
+            <div class="pf-label">🕍 Profecía en el AT</div>
+            <div class="pf-verse">"${b.prophecy.v}"</div>
+            <div class="pf-ref">— ${b.prophecy.r}</div>
+          </div>
+          <div class="pf-card pf-fulfillment">
+            <div class="pf-label">✦ Cumplimiento en Jesús</div>
+            <div class="pf-verse">"${b.fulfillment.v}"</div>
+            <div class="pf-ref">— ${b.fulfillment.r}</div>
+          </div>
+        </div>
+        <div class="connection-block">
+          <div class="conn-label">🔗 La Conexión</div>
+          <div class="conn-text">${b.connection}</div>
+        </div>
+        ${isDone
+          ? `<div class="done-stamp">✓ Pergamino leído</div>`
+          : `<button class="btn-done" onclick="markDone(event,${i})">He leído este pergamino — Avanzar →</button>`
+        }
+      </div>
     </div>
-  </div></div>
-  ${flipped?`<div class="btn-row">
-    <button class="btn-f" onclick="score('forgot')">✕ Esqueci</button>
-    <button class="btn-a" onclick="score('almost')">~ Quase</button>
-    <button class="btn-k" onclick="score('knew')">✓ Lembrei</button>
-  </div>`:''}`;
-}
-function rGaps(el,v){
-  const w=v.text.split(' ');
-  const html=w.map((x,i)=>i%4===3?`<span class="gap" onclick="this.classList.add('revealed')">${x}</span>`:x).join(' ');
-  el.innerHTML=`
-  <p class="card-counter">VERSÍCULO ${(qIdx%queue.length)+1} DE ${queue.length}</p>
-  <div class="card-area"><div class="card-back" style="position:relative;transform:none;min-height:230px">
-    <div class="card-chip">Toque nas lacunas para revelar</div>
-    <div class="gap-text">${html}</div>
-    <div class="card-ref">${v.ref}</div>
-  </div></div>
-  <div class="btn-row">
-    <button class="btn-f" onclick="score('forgot')">✕ Difícil</button>
-    <button class="btn-a" onclick="score('almost')">~ Ok</button>
-    <button class="btn-k" onclick="score('knew')">✓ Fácil</button>
-  </div>`;
-}
-function rRef(el,v){
-  el.innerHTML=`
-  <p class="card-counter">VERSÍCULO ${(qIdx%queue.length)+1} DE ${queue.length}</p>
-  <div class="card-area"><div class="card-back" style="position:relative;transform:none;min-height:230px">
-    <div class="card-chip">Recite em voz alta</div>
-    <div class="card-ref-big">${v.ref}</div>
-    ${flipped?`<div class="card-text" style="margin-top:16px">${v.text}</div>`:
-    `<div class="card-hint" style="margin-top:16px">Depois toque para conferir</div>`}
-  </div></div>
-  ${!flipped?`<div class="btn-row"><button class="btn-a" onclick="flip()">Conferir</button></div>`:
-  `<div class="btn-row">
-    <button class="btn-f" onclick="score('forgot')">✕ Esqueci</button>
-    <button class="btn-a" onclick="score('almost')">~ Quase</button>
-    <button class="btn-k" onclick="score('knew')">✓ Lembrei</button>
-  </div>`}`;
-}
-function flip(){flipped=!flipped;renderStudy();}
-function score(t){
-  const v=queue[qIdx%queue.length];
-  if(!scores[v.id])scores[v.id]={forgot:0,almost:0,knew:0};
-  scores[v.id][t]++;sv('mv_s',scores);
-  qIdx++;flipped=false;renderStudy();
-  toast(t==='knew'?'✓ Muito bem!':t==='almost'?'~ Continue praticando':'✕ Vamos revisar de novo');
+    <div class="scroll-roller-bottom"></div>`;
+
+  item.querySelector('.scroll-face').addEventListener('click',()=>toggle(i));
+  return item;
 }
 
-function renderProg(){
-  let k=0,a=0,f=0;
-  verses.forEach(v=>{const s=scores[v.id]||{};k+=s.knew||0;a+=s.almost||0;f+=s.forgot||0;});
-  document.getElementById('stats-grid').innerHTML=`
-    <div class="stat-box"><div class="stat-num" style="color:var(--green)">${k}</div><div class="stat-lbl">Lembrei</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:var(--yellow)">${a}</div><div class="stat-lbl">Quase</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:var(--red)">${f}</div><div class="stat-lbl">Esqueci</div></div>`;
-  const el=document.getElementById('prog-list');
-  if(!verses.length){el.innerHTML='<div class="empty">Sem versículos ainda.</div>';return;}
-  el.innerHTML=verses.map(v=>{
-    const s=scores[v.id]||{},tot=(s.knew||0)+(s.almost||0)+(s.forgot||0);
-    const pct=tot?Math.round(((s.knew||0)/tot)*100):0;
-    const [bc,bt]=tot===0?['b-new','Novo']:pct>=70?['b-done','Memorizado']:['b-learn','Aprendendo'];
-    return `<div class="prog-item">
-      <div class="pi-ref">${v.ref}<span class="badge ${bc}">${bt}</span></div>
-      <div class="pi-text">${v.text.substring(0,82)}…</div>
-      <div class="pi-bar"><div class="pi-fill" style="width:${pct}%"></div></div>
+function toggle(i){
+  const el = document.getElementById(`s${i}`);
+  const body = el.querySelector('.scroll-body');
+  if(openIdx===i){
+    openIdx=null; body.style.maxHeight='0';
+    el.querySelector('.face-arrow') && (el.querySelector('.face-arrow').style.transform='');
+  } else {
+    if(openIdx!==null){
+      const prev=document.getElementById(`s${openIdx}`);
+      if(prev){ prev.querySelector('.scroll-body').style.maxHeight='0'; prev.classList.remove('open');
+        const arr=prev.querySelector('.face-arrow'); if(arr) arr.style.transform=''; }
+    }
+    openIdx=i; body.style.maxHeight='900px'; el.classList.add('open');
+    const arr=el.querySelector('.face-arrow'); if(arr) arr.style.transform='rotate(180deg)';
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  }
+}
+
+function markDone(e,i){
+  e.stopPropagation();
+  done.add(i);
+  updateProgress();
+  const cur=document.getElementById(`s${i}`);
+  openIdx=null;
+  cur.replaceWith(buildScroll(i));
+}
+
+// ── QUIZ ──
+function startQuiz(){
+  document.getElementById('quiz-section').scrollIntoView({behavior:'smooth',block:'start'});
+  renderQ();
+}
+
+function renderQ(){
+  const body=document.getElementById('quiz-body');
+  if(qIdx>=QUIZ.length){ showResult(); return; }
+  const q=QUIZ[qIdx];
+  const pct=Math.round((qIdx/QUIZ.length)*100);
+  body.innerHTML=`
+    <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:${pct}%"></div></div>
+    <div style="font-size:11px;letter-spacing:2px;color:#8a6030;margin-bottom:16px;text-transform:uppercase">Pregunta ${qIdx+1} de ${QUIZ.length}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-opts">
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answer(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-fb" id="qfb"></div>
+    <button class="btn-next-q" id="qnxt" onclick="nextQ()">Siguiente pregunta →</button>`;
+}
+
+function answer(i){
+  const q=QUIZ[qIdx];
+  document.querySelectorAll('.quiz-opt').forEach(o=>o.disabled=true);
+  const fb=document.getElementById('qfb');
+  if(i===q.ans){ document.querySelectorAll('.quiz-opt')[i].classList.add('correct'); score++;
+    fb.innerHTML=`✓ ¡Correcto! <em>${q.exp}</em>`; fb.style.color='#2a6a3a';
+  } else { document.querySelectorAll('.quiz-opt')[i].classList.add('wrong');
+    document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+    fb.innerHTML=`✗ Incorrecto. <em>${q.exp}</em>`; fb.style.color='#8a2020';
+  }
+  document.getElementById('qnxt').classList.add('show');
+}
+
+function nextQ(){ qIdx++; renderQ(); }
+
+function showResult(){
+  const pct=Math.round((score/QUIZ.length)*100);
+  const msg = pct>=90 ? "Tus ojos han sido abiertos. Ves a Cristo en cada página de las Escrituras." :
+              pct>=70 ? "Estás aprendiendo a leer la Biblia con nuevos ojos. Continúa el viaje." :
+              pct>=50 ? "Un buen comienzo. Cada lectura revela más — vuelve a los pergaminos y repite." :
+              "Las Escrituras son profundas. Vuelve a leer los pergaminos y deja que la conexión se afiance.";
+  document.getElementById('quiz-body').innerHTML=`
+    <div class="quiz-result">
+      <div class="result-num">${score}/${QUIZ.length}</div>
+      <div class="result-sub">${pct}% de aciertos</div>
+      <div class="result-msg">"${msg}"</div>
+      <button class="btn-restart" onclick="restartQuiz()">↺ Repetir el Quiz</button>
     </div>`;
-  }).join('');
 }
 
-function addVerse(){
-  const ref=document.getElementById('inp-ref').value.trim();
-  const text=document.getElementById('inp-text').value.trim();
-  if(!ref||!text){toast('Preencha a referência e o texto');return;}
-  verses.push({id:Date.now(),ref,text});sv('mv_v',verses);
-  document.getElementById('inp-ref').value='';
-  document.getElementById('inp-text').value='';
-  document.getElementById('ai-status').textContent='';
-  queue=bldQ();qIdx=0;renderList();toast('Versículo adicionado!');
-}
-function delVerse(id){
-  verses=verses.filter(v=>v.id!==id);sv('mv_v',verses);
-  delete scores[id];sv('mv_s',scores);
-  queue=bldQ();qIdx=0;renderList();toast('Removido');
-}
-function renderList(){
-  const el=document.getElementById('verse-list');
-  if(!verses.length){el.innerHTML='<div class="empty">Nenhum versículo ainda.</div>';return;}
-  el.innerHTML=verses.map(v=>`
-    <div class="verse-item">
-      <div><div class="vi-ref">${v.ref}</div><div class="vi-prev">${v.text.substring(0,58)}…</div></div>
-      <button class="btn-del" onclick="delVerse(${v.id})">remover</button>
-    </div>`).join('');
-}
+function restartQuiz(){ qIdx=0; score=0; renderQ(); }
 
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2300);
-}
-
-queue=bldQ();renderStudy();
+// INIT
+renderTrail();
+updateProgress();
+document.getElementById('quiz-body').innerHTML=`
+  <div class="quiz-locked">
+    <span class="lock">🔒</span>
+    Completa el viaje por los 39 pergaminos para desbloquear la Prueba del Escriba.
+  </div>`;
 </script>
 </body>
 </html>
